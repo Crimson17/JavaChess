@@ -102,7 +102,7 @@ public class Chess implements ActionListener {
             HighlightFigure(e);
         }
         // Dev Tool
-        /*
+
         System.out.println("\n---------------\n");
         for(int i=0; i<64; i++){
             if(i != 0 && i % 8 == 0){
@@ -110,7 +110,7 @@ public class Chess implements ActionListener {
             }
             System.out.print(buttons[i].getName() + " ");
         }
-         */
+
     }
 
     // Uses a highlighting function depending on what type of figure is selected
