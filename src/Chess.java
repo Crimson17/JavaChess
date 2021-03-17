@@ -157,10 +157,10 @@ public class Chess implements ActionListener {
     public void HighlightPawn(int FigureIndex){
         if(FigureIsBlack(FigureIndex) == 0 && FigureIndex > 7 && whitesTurn) {
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
-            if(FigureIndex > 47 && FigureIndex < 56 && buttons[FigureIndex - 8].getName().equals("0") && buttons[FigureIndex - 16].getName().equals("0")){
+            if(FigureIndex > 47 && FigureIndex < 56 && FigureIsBlack(FigureIndex-8) == -1 && FigureIsBlack(FigureIndex-16) == -1){
                 buttons[FigureIndex - 16].setBackground(highlightColor);
             }
-            if(buttons[FigureIndex - 8].getName().equals("0")){
+            if(FigureIsBlack(FigureIndex-8) == -1){
                 buttons[FigureIndex - 8].setBackground(highlightColor);
             }
             if(FigureIndex % 8 != 0 && FigureIsBlack(FigureIndex - 9) == 1){
@@ -173,10 +173,10 @@ public class Chess implements ActionListener {
         }
         else if(FigureIsBlack(FigureIndex) == 1 && FigureIndex < 56 && !whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
-            if(FigureIndex > 7 && FigureIndex < 16 && buttons[FigureIndex + 8].getName().equals("0") && buttons[FigureIndex + 16].getName().equals("0")){
+            if(FigureIndex > 7 && FigureIndex < 16 && FigureIsBlack(FigureIndex+8) == -1 && FigureIsBlack(FigureIndex+16) == -1){
                 buttons[FigureIndex + 16].setBackground(highlightColor);
             }
-            if(buttons[FigureIndex + 8].getName().equals("0")){
+            if(FigureIsBlack(FigureIndex+8) == -1){
                 buttons[FigureIndex + 8].setBackground(highlightColor);
             }
             if(FigureIndex % 8 != 0 && FigureIsBlack(FigureIndex + 7) == 0){
@@ -189,6 +189,20 @@ public class Chess implements ActionListener {
         }
     }
     public void HighlightKnight(int FigureIndex){
+        if(FigureIsBlack(FigureIndex) == 0 && whitesTurn){
+            buttons[FigureIndex].setBackground(stationaryHighlightColor);
+            if(FigureIsBlack(FigureIndex-15) == -1 || FigureIsBlack(FigureIndex-15) == 1 && FigureIndex > 15){
+                buttons[FigureIndex - 15].setBackground(highlightColor);
+            }
+            figureIsSelected = true;
+        }
+        else if(FigureIsBlack(FigureIndex) == 1 && !whitesTurn){
+            buttons[FigureIndex].setBackground(stationaryHighlightColor);
+            if(FigureIsBlack(FigureIndex-15) == -1 || FigureIsBlack(FigureIndex-15) == 0 && FigureIndex > 15){
+                buttons[FigureIndex - 15].setBackground(highlightColor);
+            }
+            figureIsSelected = true;
+        }
 
     }
     public void HighlightBishop(int FigureIndex){
@@ -222,6 +236,11 @@ public class Chess implements ActionListener {
                     Recolor();
                     figureIsSelected = false;
                     WhosTurn();
+                    i=64;
+                }
+                else if(buttons[i].getBackground() == stationaryHighlightColor){
+                    Recolor();
+                    figureIsSelected = false;
                     i=64;
                 }
             }
