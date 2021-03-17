@@ -5,7 +5,7 @@ board colors - done
 moving in general - done
 eating - done
 
-Pawns - done
+Pawns - almost done (have to add turn to queen if u get to the end of the board)
 Knights - not done
 Bishops - not done
 Rooks - not done
