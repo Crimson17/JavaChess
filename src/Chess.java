@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Image;
 
 public class Chess implements ActionListener {
 
@@ -21,40 +22,38 @@ public class Chess implements ActionListener {
     Color highlightColor = new Color(137, 207, 240);
     Color stationaryHighlightColor = new Color(100, 170, 180);
 
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int windowWidth = (int)screenSize.getHeight() - 120;
+    int windowHeight = windowWidth + (windowWidth/25);
 
 
-    /*
-    0 Pawn
-    1 Knight
-    2 Bishop
-    3 Rook
-    4 Queen
-    6 King
-    +
-    0 White
-    6 Black
-    */
-    // Loading figure images
-    Icon[] figures = {
-            new ImageIcon("data/w_pawn.png"),
-            new ImageIcon("data/w_knight.png"),
-            new ImageIcon("data/w_bishop.png"),
-            new ImageIcon("data/w_rook.png"),
-            new ImageIcon("data/w_queen.png"),
-            new ImageIcon("data/w_king.png"),
-            new ImageIcon("data/b_pawn.png"),
-            new ImageIcon("data/b_knight.png"),
-            new ImageIcon("data/b_bishop.png"),
-            new ImageIcon("data/b_rook.png"),
-            new ImageIcon("data/b_queen.png"),
-            new ImageIcon("data/b_king.png")};
+    // Loading all images and scaling them
+    Image[] loadImages = {
+            new ImageIcon("res/w_pawn.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_knight.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_bishop.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_rook.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_queen.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_king.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_pawn.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_knight.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_bishop.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_rook.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_queen.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_king.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH)};
 
+    // Array of empty icons
+    ImageIcon[] figures = new ImageIcon[12];
 
     Chess(){
+        // Turn all scaled images into icons
+        for(int i=0; i<12; i++){
+            figures[i] = new ImageIcon(loadImages[i]);
+        }
 
         // Setting up the window and buttons
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000,1050);
+        frame.setSize(windowWidth,windowHeight);
         frame.getContentPane().setBackground(new Color(50, 50, 50));
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
@@ -62,13 +61,13 @@ public class Chess implements ActionListener {
 
         titleText.setBackground(new Color(50,50,50));
         titleText.setForeground(new Color(250,250,250));
-        titleText.setFont(new Font("Ink Free", Font.BOLD, 75));
+        titleText.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
         titleText.setHorizontalAlignment(JLabel.CENTER);
         titleText.setText("White's turn!");
         titleText.setOpaque(true);
 
         titlePanel.setLayout(new BorderLayout());
-        titlePanel.setBounds(0,0,1000,50);
+        titlePanel.setBounds(0,0,windowWidth,windowHeight-windowWidth);
 
         buttonPanel.setLayout(new GridLayout(8,8));
         buttonPanel.setBackground(new Color(50,50,50));
@@ -80,6 +79,7 @@ public class Chess implements ActionListener {
             buttons[i].setHorizontalTextPosition(JLabel.CENTER);
             buttons[i].setBorder(BorderFactory.createLineBorder(new Color(45, 45, 45)));
             buttons[i].setFocusable(false);
+            buttons[i].setOpaque(true);
             buttons[i].addActionListener(this);
         }
 
