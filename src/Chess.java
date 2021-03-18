@@ -29,18 +29,18 @@ public class Chess implements ActionListener {
 
     // Loading all images and scaling them
     Image[] loadImages = {
-            new ImageIcon(getClass().getClassLoader().getResource("w_pawn.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("w_knight.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("w_bishop.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("w_rook.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("w_queen.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("w_king.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("b_pawn.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("b_knight.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("b_bishop.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("b_rook.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("b_queen.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon(getClass().getClassLoader().getResource("b_king.png")).getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH)};
+            new ImageIcon("res/w_pawn.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_knight.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_bishop.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_rook.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_queen.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/w_king.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_pawn.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_knight.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_bishop.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_rook.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_queen.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
+            new ImageIcon("res/b_king.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH)};
 
     // Array of empty icons
     ImageIcon[] figures = new ImageIcon[12];
