@@ -9,6 +9,7 @@ public class Logic implements ActionListener{
     JButton[] buttons = {};
     JLabel titleText;
 
+    boolean devTool = true;
     boolean figureIsSelected = false;
     boolean whitesTurn = true;
 
@@ -57,6 +58,7 @@ public class Logic implements ActionListener{
 
     // These are for specific figure highlighting, doesn't move the figure
     public void HighlightPawn(int FigureIndex){
+        // White
         if(FigureIsBlack(FigureIndex) == 0 && FigureIndex > 7 && whitesTurn) {
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
             if(FigureIndex > 47 && FigureIndex < 56 && FigureIsBlack(FigureIndex-8) == -1 && FigureIsBlack(FigureIndex-16) == -1){
@@ -73,6 +75,7 @@ public class Logic implements ActionListener{
             }
             figureIsSelected = true;
         }
+        // Black
         else if(FigureIsBlack(FigureIndex) == 1 && FigureIndex < 56 && !whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
             if(FigureIndex > 7 && FigureIndex < 16 && FigureIsBlack(FigureIndex+8) == -1 && FigureIsBlack(FigureIndex+16) == -1){
@@ -91,6 +94,7 @@ public class Logic implements ActionListener{
         }
     }
     public void HighlightKnight(int FigureIndex){
+        // White
         if(FigureIsBlack(FigureIndex) == 0 && whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
             if(FigureIsBlack(FigureIndex-15) == -1 || FigureIsBlack(FigureIndex-15) == 1 && FigureIndex > 15){
@@ -98,6 +102,7 @@ public class Logic implements ActionListener{
             }
             figureIsSelected = true;
         }
+        // Black
         else if(FigureIsBlack(FigureIndex) == 1 && !whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
             if(FigureIsBlack(FigureIndex-15) == -1 || FigureIsBlack(FigureIndex-15) == 0 && FigureIndex > 15){
@@ -139,13 +144,12 @@ public class Logic implements ActionListener{
                     Recolor();
                     WhosTurn();
                     figureIsSelected = false;
-                    i=64;
                 }
                 else if(buttons[i].getBackground() == stationaryHighlightColor){
                     Recolor();
                     figureIsSelected = false;
-                    i=64;
                 }
+                i = 64;
             }
         }
     }
@@ -206,12 +210,14 @@ public class Logic implements ActionListener{
         }
 
         // Dev Tool
-        System.out.println("\n---------------\n");
-        for(int i=0; i<64; i++){
-            if(i != 0 && i % 8 == 0){
-                System.out.println();
+        if (devTool) {
+            System.out.println("\n---------------\n");
+            for (int i = 0; i < 64; i++) {
+                if (i != 0 && i % 8 == 0) {
+                    System.out.println();
+                }
+                System.out.print(buttons[i].getName() + " ");
             }
-            System.out.print(buttons[i].getName() + " ");
         }
     }
 }
