@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 public class Logic implements ActionListener{
 
+    // Aren't the copies but actual buttons and tittleText :) (I finally get how classes work)
     JButton[] buttons = {};
     JLabel titleText;
 
