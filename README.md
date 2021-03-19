@@ -1,2 +1,2 @@
 # JavaChess
- Chess I made in java
+ Logic I made in java

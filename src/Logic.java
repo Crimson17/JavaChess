@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Image;
+import java.util.Objects;
 
-public class Chess implements ActionListener {
+public class Logic implements ActionListener {
 
     JFrame frame = new JFrame();
     JPanel titlePanel = new JPanel();
@@ -26,31 +26,22 @@ public class Chess implements ActionListener {
     int windowWidth = (int)screenSize.getHeight() - 120;
     int windowHeight = windowWidth + (windowWidth/25);
 
+    // Loading all image icons from res folder
+    ImageIcon[] figures = {
+            resImageToIcon("w_pawn.png"),
+            resImageToIcon("w_knight.png"),
+            resImageToIcon("w_bishop.png"),
+            resImageToIcon("w_rook.png"),
+            resImageToIcon("w_queen.png"),
+            resImageToIcon("w_king.png"),
+            resImageToIcon("b_pawn.png"),
+            resImageToIcon("b_knight.png"),
+            resImageToIcon("b_bishop.png"),
+            resImageToIcon("b_rook.png"),
+            resImageToIcon("b_queen.png"),
+            resImageToIcon("b_king.png")};
 
-    // Loading all images and scaling them
-    Image[] loadImages = {
-            new ImageIcon("res/w_pawn.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/w_knight.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/w_bishop.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/w_rook.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/w_queen.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/w_king.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/b_pawn.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/b_knight.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/b_bishop.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/b_rook.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/b_queen.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH),
-            new ImageIcon("res/b_king.png").getImage().getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH)};
-
-    // Array of empty icons
-    ImageIcon[] figures = new ImageIcon[12];
-
-    Chess(){
-        // Turn all scaled images into icons
-        for(int i=0; i<12; i++){
-            figures[i] = new ImageIcon(loadImages[i]);
-        }
-
+    Logic(){
         // Setting up the window and buttons
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(windowWidth,windowHeight);
@@ -313,5 +304,12 @@ public class Chess implements ActionListener {
             whitesTurn = true;
             titleText.setText("White's turn!");
         }
+    }
+
+    // Loading Image from res folder, scale the image to fit the button and return as ImageIcon
+    public ImageIcon resImageToIcon(String FileName){
+        Image loadedImage = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource(FileName))).getImage();
+        Image scaledImage = loadedImage.getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
     }
 }
