@@ -12,7 +12,7 @@ public class Visuals{
     JButton[] buttons = new JButton[64];
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int windowWidth = (int)screenSize.getHeight() - 120;
+    int windowWidth = (int)screenSize.getHeight() - 100;
     int windowHeight = windowWidth + (windowWidth/25);
 
     String whiteFirstFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
@@ -33,8 +33,10 @@ public class Visuals{
             resImageToIcon("b_king.png")};
 
     Visuals(){
+        // Assigning variables in the logic class
         logic.buttons = buttons;
         logic.titleText = titleText;
+
         // Setting up the window and buttons
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(windowWidth,windowHeight);
