@@ -72,18 +72,7 @@ public class Visuals{
             buttons[i].addActionListener(logic);
         }
 
-        boolean useEven = true;
-        for(int i=0; i<64; i++){
-            if(i != 0 && i % 8 == 0){
-                useEven = !useEven;
-            }
-            if(i % 2 == 0 && useEven || i % 2 != 0 && !useEven){
-                buttons[i].setBackground(new Color(240, 217, 183));
-            }
-            else{
-                buttons[i].setBackground(new Color(180, 136, 102));
-            }
-        }
+        logic.Recolor();
 
         titlePanel.add(titleText);
         frame.add(titlePanel, BorderLayout.NORTH);

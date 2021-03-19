@@ -171,20 +171,17 @@ public class Logic implements ActionListener{
     }
 
     // Checks what color is the figure at certain spot
-    public int FigureIsBlack(int n){
-        String figureName = buttons[n].getName();
+    public int FigureIsBlack(int d){
+        String figureName = buttons[d].getName();
+        String[] whites = {"P", "N", "B", "R", "Q", "K"};
         if(figureName.equals("0")){
-            //System.out.println("zero");
             return -1;
         }
-        String[] whites = {"P", "N", "B", "R", "Q", "K"};
         for(String x : whites){
             if(figureName.equals(x)){
-                //System.out.println("white");
                 return 0;
             }
         }
-        //System.out.println("black");
         return 1;
     }
 
@@ -219,5 +216,8 @@ public class Logic implements ActionListener{
                 System.out.print(buttons[i].getName() + " ");
             }
         }
+    }
+    public static int CalculateCords(int x, int y){
+        return -((y*8)-x);
     }
 }
