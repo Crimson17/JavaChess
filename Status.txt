@@ -8,9 +8,9 @@ eating - done
 Pawns - done  ADDED!//(have to add turn to queen if u get to the end of the board) ADDED!
 Knights - done
 Bishops - done
+Rooks - done
+Queens - done
 
-Rooks - not done
-Queens - not done
 Kings - not done
 
 castling - not done
