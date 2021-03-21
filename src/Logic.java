@@ -325,6 +325,92 @@ public class Logic implements ActionListener{
             int[] xIncr = {1, -1};
             int[] yIncr = {1, -1};
 
+            for(int i=0; i<2; i++){
+                xCord = xIncr[i];
+                yCord = 0;
+                // First check of the top and bottom bounds
+                if(CalculateCords(FigureIndex, xCord, yCord) >= 0 && CalculateCords(FigureIndex, xCord, yCord) < 64){
+                    // First check of the side bounds
+                    if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0)) {
+                        // Highlight until the spot has a black figure
+                        while(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) != 1){
+                            // Highlight empty spots
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == -1){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            }
+                            // If the spot has a white figure highlight and stop
+                            else if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == 0){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            if(IsOnLeftBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnRightBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnTopBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnBottomBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            xCord += xIncr[i];
+                        }
+                    }
+                }
+            }
+            for(int i=0; i<2; i++){
+                xCord = 0;
+                yCord = yIncr[i];
+                // First check of the top and bottom bounds
+                if(CalculateCords(FigureIndex, xCord, yCord) >= 0 && CalculateCords(FigureIndex, xCord, yCord) < 64){
+                    // First check of the side bounds
+                    if((!IsOnBottomBound(FigureIndex) && yCord < 0) || (!IsOnTopBound(FigureIndex) && yCord > 0)) {
+                        // Highlight until the spot has a black figure
+                        while(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) != 1){
+                            // Highlight empty spots
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == -1){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            }
+                            // If the spot has a white figure highlight and stop
+                            else if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == 0){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            if(IsOnLeftBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnRightBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnTopBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnBottomBound(CalculateCords(FigureIndex, xCord, yCord))){
+                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                                break;
+                            }
+                            yCord += yIncr[i];
+                        }
+                    }
+                }
+            }
         }
         // Black
         else if(FigureIsWhite(FigureIndex) == 0 && !whitesTurn) {
@@ -334,7 +420,7 @@ public class Logic implements ActionListener{
             int yCord;
             int[] xIncr = {1, -1};
             int[] yIncr = {1, -1};
-            
+
         }
     }
     public void HighlightQueen(int FigureIndex){

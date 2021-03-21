@@ -16,6 +16,7 @@ public class Visuals{
     int windowHeight = windowWidth + (windowWidth/25);
 
     String whiteFirstFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    String WipFEN = "8/1Q3Pn1/3B4/1N6/4k1q1/2R5/1p1K1b2/7r";
 
     // Loading all image icons from res folder
     ImageIcon[] figures = {
@@ -79,7 +80,7 @@ public class Visuals{
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(buttonPanel);
 
-        FEN(whiteFirstFEN);
+        FEN(WipFEN);
     }
 
     // Loading Image from res folder, scale the image to fit the button and return as ImageIcon
