@@ -8,6 +8,7 @@ public class Logic implements ActionListener{
     // Aren't the copies but actual buttons and tittleText :) (I finally get how classes work)
     JButton[] buttons = {};
     JLabel titleText;
+    ImageIcon[] figures;
 
     boolean devTool = true;
     boolean figureIsSelected = false;
@@ -76,11 +77,11 @@ public class Logic implements ActionListener{
                     }
                 }
                 // Check if the spot to side has an enemy
-                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 0){
+                if(FigureIndex % 8 != 7 && FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 0){
                     buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
                 }
                 // Check if the other spot to side has an enemy
-                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 0){
+                if(FigureIndex % 8 != 0 && FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 0){
                     buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
                 }
             }
@@ -103,11 +104,11 @@ public class Logic implements ActionListener{
                     }
                 }
                 // Check if the spot to side has an enemy
-                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 1){
+                if(FigureIndex % 8 != 7 && FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 1){
                     buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
                 }
                 // Check if the other spot to side has an enemy
-                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 1){
+                if(FigureIndex % 8 != 0 && FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 1){
                     buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
                 }
             }
@@ -207,21 +208,24 @@ public class Logic implements ActionListener{
         if(FigureIsWhite(FigureIndex) == 1 && whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
             figureIsSelected = true;
+            int xCord;
+            int yCord;
+            int[] xIncr = {1, 1, -1, -1};
+            int[] yIncr = {1, -1, -1, 1};
 
-            int x;
-            int y;
-            int[] xIncr = {1, -1, 1, -1};
-            int[] yIncr = {1, 1, -1, -1};
             for(int i=0; i<4; i++){
-                x=0;
-                y=0;
-                do {
-                    if(x != 0 && y != 0) {
-                        buttons[CalculateCords(FigureIndex, x, y)].setBackground(highlightColor);
+                xCord = 0;
+                yCord = 0;
+                do{
+                    if(xCord != 0 && yCord != 0){
+                        buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
                     }
-                    x = x + xIncr[i];
-                    y = y + yIncr[i];
-                } while(!IsOnBounds(CalculateCords(FigureIndex, x, y)) && FigureIsWhite(CalculateCords(FigureIndex, x, y)) == -1);
+                    xCord += xIncr[i];
+                    yCord += yIncr[i];
+                    if(!(CalculateCords(FigureIndex, xCord, yCord) >= 0 && CalculateCords(FigureIndex, xCord, yCord) < 64)){
+                        break;
+                    }
+                }while(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == -1);
             }
         }
         else if(FigureIsWhite(FigureIndex) == 0 && !whitesTurn){
@@ -266,6 +270,7 @@ public class Logic implements ActionListener{
                     Recolor();
                     figureIsSelected = false;
                 }
+                CheckPawnToQueen();
                 i = 64;
             }
         }
@@ -314,6 +319,31 @@ public class Logic implements ActionListener{
         }
     }
 
+    public int CalculateCords(int pos, int x, int y){
+        return pos-((y*8)-x);
+    }
+
+    public boolean IsOnBounds(int index){
+        return !(index % 8 > 0 && index % 8 < 7 && index > 7 && index < 56);
+    }
+
+    public void CheckPawnToQueen(){
+        for(int i=0; i<8; i++){
+            if(buttons[i].getName().equals("P")){
+                buttons[i].setName("Q");
+                buttons[i].setIcon(figures[4]);
+                break;
+            }
+        }
+        for(int i=56; i<64; i++){
+            if(buttons[i].getName().equals("p")){
+                buttons[i].setName("q");
+                buttons[i].setIcon(figures[10]);
+                break;
+            }
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(figureIsSelected){
@@ -333,11 +363,5 @@ public class Logic implements ActionListener{
                 System.out.print(buttons[i].getName() + " ");
             }
         }
-    }
-    public int CalculateCords(int pos, int x, int y){
-        return pos-((y*8)-x);
-    }
-    public boolean IsOnBounds(int a){
-        return !(a % 8 > 0 && a % 8 < 7 && a > 7 && a < 56);
     }
 }

@@ -36,6 +36,7 @@ public class Visuals{
         // Assigning variables in the logic class
         logic.buttons = buttons;
         logic.titleText = titleText;
+        logic.figures = figures;
 
         // Setting up the window and buttons
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
