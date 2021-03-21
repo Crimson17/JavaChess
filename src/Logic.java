@@ -59,62 +59,179 @@ public class Logic implements ActionListener{
     // These are for specific figure highlighting, doesn't move the figure
     public void HighlightPawn(int FigureIndex){
         // White
-        if(FigureIsBlack(FigureIndex) == 0 && FigureIndex > 7 && whitesTurn) {
+        if(FigureIsWhite(FigureIndex) == 1 && whitesTurn) {
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
-            if(FigureIndex > 47 && FigureIndex < 56 && FigureIsBlack(FigureIndex-8) == -1 && FigureIsBlack(FigureIndex-16) == -1){
-                buttons[FigureIndex - 16].setBackground(highlightColor);
-            }
-            if(FigureIsBlack(FigureIndex-8) == -1){
-                buttons[FigureIndex - 8].setBackground(highlightColor);
-            }
-            if(FigureIndex % 8 != 0 && FigureIsBlack(FigureIndex - 9) == 1){
-                buttons[FigureIndex - 9].setBackground(highlightColor);
-            }
-            if(FigureIndex % 8 != 7 && FigureIsBlack(FigureIndex - 7) == 1){
-                buttons[FigureIndex - 7].setBackground(highlightColor);
-            }
             figureIsSelected = true;
+            int[] xCord = {0, 0, 1, -1};
+            int[] yCord = {1, 2, 1, 1};
+
+            // Check if pawn is on last row
+            if(FigureIndex > 7){
+                // Check if one spot in front is empty
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
+                    buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
+                    // Check if spot two steps in front is empty
+                    if(FigureIndex > 47 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
+                        buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                    }
+                }
+                // Check if the spot to side has an enemy
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 0){
+                    buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
+                }
+                // Check if the other spot to side has an enemy
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 0){
+                    buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
+                }
+            }
         }
         // Black
-        else if(FigureIsBlack(FigureIndex) == 1 && FigureIndex < 56 && !whitesTurn){
+        else if(FigureIsWhite(FigureIndex) == 0 && !whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
-            if(FigureIndex > 7 && FigureIndex < 16 && FigureIsBlack(FigureIndex+8) == -1 && FigureIsBlack(FigureIndex+16) == -1){
-                buttons[FigureIndex + 16].setBackground(highlightColor);
-            }
-            if(FigureIsBlack(FigureIndex+8) == -1){
-                buttons[FigureIndex + 8].setBackground(highlightColor);
-            }
-            if(FigureIndex % 8 != 0 && FigureIsBlack(FigureIndex + 7) == 0){
-                buttons[FigureIndex + 7].setBackground(highlightColor);
-            }
-            if(FigureIndex % 8 != 7 && FigureIsBlack(FigureIndex + 9) == 0){
-                buttons[FigureIndex + 9].setBackground(highlightColor);
-            }
             figureIsSelected = true;
+            int[] xCord = {0, 0, 1, -1};
+            int[] yCord = {-1, -2, -1, -1};
+
+            // Check if pawn is on last row
+            if(FigureIndex < 56){
+                // Check if one spot in front is empty
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
+                    buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
+                    // Check if spot two steps in front is empty
+                    if(FigureIndex < 16 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
+                        buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                    }
+                }
+                // Check if the spot to side has an enemy
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 1){
+                    buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
+                }
+                // Check if the other spot to side has an enemy
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 1){
+                    buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
+                }
+            }
         }
     }
+
     public void HighlightKnight(int FigureIndex){
         // White
-        if(FigureIsBlack(FigureIndex) == 0 && whitesTurn){
+        if(FigureIsWhite(FigureIndex) == 1 && whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
-            if(FigureIsBlack(FigureIndex-15) == -1 || FigureIsBlack(FigureIndex-15) == 1 && FigureIndex > 15){
-                buttons[FigureIndex - 15].setBackground(highlightColor);
-            }
             figureIsSelected = true;
+            int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
+            int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
+
+            for(int i=0; i<xCord.length; i++){
+                // Check if movement is inside the board
+                if(CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64){
+                    // Check if movement is to the left
+                    if(xCord[i] < 0){
+                        // Check if there is movement space to the left
+                        if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                        // Check if there is movement space to the left
+                        else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                    // Check if movement is to the right
+                    else{
+                        // Check if there is movement space to the right
+                        if(xCord[i] == 1 && FigureIndex % 8 < 7){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                        // Check if there is movement space to the right
+                        else if(xCord[i] == 2 && FigureIndex % 8 < 6){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                }
+            }
         }
         // Black
-        else if(FigureIsBlack(FigureIndex) == 1 && !whitesTurn){
+        else if(FigureIsWhite(FigureIndex) == 0 && !whitesTurn){
             buttons[FigureIndex].setBackground(stationaryHighlightColor);
-            if(FigureIsBlack(FigureIndex-15) == -1 || FigureIsBlack(FigureIndex-15) == 0 && FigureIndex > 15){
-                buttons[FigureIndex - 15].setBackground(highlightColor);
-            }
             figureIsSelected = true;
+            int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
+            int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
+
+            for(int i=0; i<xCord.length; i++){
+                // Check if movement is inside the board
+                if(CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64){
+                    // Check if movement is to the left
+                    if(xCord[i] < 0){
+                        // Check if there is movement space to the left
+                        if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                        // Check if there is movement space to the left
+                        else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                    // Check if movement is to the right
+                    else{
+                        // Check if there is movement space to the right
+                        if(xCord[i] == 1 && FigureIndex % 8 < 7){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                        // Check if there is movement space to the right
+                        else if(xCord[i] == 2 && FigureIndex % 8 < 6){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                }
+            }
         }
-
     }
+
     public void HighlightBishop(int FigureIndex){
+        if(FigureIsWhite(FigureIndex) == 1 && whitesTurn){
+            buttons[FigureIndex].setBackground(stationaryHighlightColor);
+            figureIsSelected = true;
 
+            int x;
+            int y;
+            int[] xIncr = {1, -1, 1, -1};
+            int[] yIncr = {1, 1, -1, -1};
+            for(int i=0; i<4; i++){
+                x=0;
+                y=0;
+                do {
+                    if(x != 0 && y != 0) {
+                        buttons[CalculateCords(FigureIndex, x, y)].setBackground(highlightColor);
+                    }
+                    x = x + xIncr[i];
+                    y = y + yIncr[i];
+                } while(!IsOnBounds(CalculateCords(FigureIndex, x, y)) && FigureIsWhite(CalculateCords(FigureIndex, x, y)) == -1);
+            }
+        }
+        else if(FigureIsWhite(FigureIndex) == 0 && !whitesTurn){
+            buttons[FigureIndex].setBackground(stationaryHighlightColor);
+            figureIsSelected = true;
+
+
+        }
     }
+
     public void HighlightRook(int FigureIndex){
 
     }
@@ -170,19 +287,19 @@ public class Logic implements ActionListener{
         }
     }
 
-    // Checks what color is the figure at certain spot
-    public int FigureIsBlack(int d){
+    // Checks if the figure is white or empty
+    public int FigureIsWhite(int d){
         String figureName = buttons[d].getName();
         String[] whites = {"P", "N", "B", "R", "Q", "K"};
-        if(figureName.equals("0")){
+        if(buttons[d].getName().equals("0")){
             return -1;
         }
         for(String x : whites){
             if(figureName.equals(x)){
-                return 0;
+                return 1;
             }
         }
-        return 1;
+        return 0;
     }
 
     // Self explanatory
@@ -217,7 +334,10 @@ public class Logic implements ActionListener{
             }
         }
     }
-    public static int CalculateCords(int x, int y){
-        return -((y*8)-x);
+    public int CalculateCords(int pos, int x, int y){
+        return pos-((y*8)-x);
+    }
+    public boolean IsOnBounds(int a){
+        return !(a % 8 > 0 && a % 8 < 7 && a > 7 && a < 56);
     }
 }
