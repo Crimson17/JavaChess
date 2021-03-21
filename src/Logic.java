@@ -435,7 +435,80 @@ public class Logic implements ActionListener{
         HighlightBishop(FigureIndex);
     }
     public void HighlightKing(int FigureIndex){
+        // White
+        if(FigureIsWhite(FigureIndex) == 1 && whitesTurn) {
+            buttons[FigureIndex].setBackground(stationaryHighlightColor);
+            figureIsSelected = true;
+            int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
+            int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
 
+            for(int i=0; i<8; i++) {
+                // Check of the top and bottom bounds
+                if (CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64) {
+                    // Check if movement is to the left
+                    if (xCord[i] < 0) {
+                        // Check if there is movement space to the left
+                        if(FigureIndex % 8 > 0){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                    // Check if movement is to the right
+                    else if(xCord[i] > 0){
+                        // Check if there is movement space to the right
+                        if(FigureIndex % 8 < 7){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                    // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
+                    else{
+                        if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
+                            buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                        }
+                    }
+                }
+            }
+        }
+        // Black
+        else if(FigureIsWhite(FigureIndex) == 0 && !whitesTurn) {
+            buttons[FigureIndex].setBackground(stationaryHighlightColor);
+            figureIsSelected = true;
+            int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
+            int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
+
+            for(int i=0; i<8; i++) {
+                // Check of the top and bottom bounds
+                if (CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64) {
+                    // Check if movement is to the left
+                    if (xCord[i] < 0) {
+                        // Check if there is movement space to the left
+                        if(FigureIndex % 8 > 0){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                    // Check if movement is to the right
+                    else if(xCord[i] > 0){
+                        // Check if there is movement space to the right
+                        if(FigureIndex % 8 < 7){
+                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
+                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            }
+                        }
+                    }
+                    // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
+                    else{
+                        if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
+                            buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Moves the figure to the pressed button if the button is already highlighted

@@ -5,13 +5,13 @@ board colors - done
 moving in general - done
 eating - done
 
-Pawns - done  ADDED!//(have to add turn to queen if u get to the end of the board) ADDED!
+Pawns - done
 Knights - done
 Bishops - done
 Rooks - done
 Queens - done
 
-Kings - not done
+Kings - almost done (Have to add: Kings cant get close to eacher other)
 
 castling - not done
 checkmate - not done
