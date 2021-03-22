@@ -14,8 +14,16 @@ public class Logic implements ActionListener{
     boolean figureIsSelected = false;
     boolean whitesTurn = true;
 
+    boolean wKingHasMoved = false;
+    boolean wRRookHasMoved = false;
+    boolean wLRookHasMoved = false;
+    boolean bKingHasMoved = false;
+    boolean bRRookHasMoved = false;
+    boolean bLRookHasMoved = false;
+
     Color highlightColor = new Color(137, 207, 240);
     Color stationaryHighlightColor = new Color(100, 170, 180);
+    Color castlingHighlight = new Color(113, 194, 50);
 
     // Uses a highlighting function depending on what type of figure is selected
     public void HighlightFigure(ActionEvent e){
@@ -514,6 +522,17 @@ public class Logic implements ActionListener{
                     }
                 }
             }
+            // Castling
+            if(!wKingHasMoved && !wLRookHasMoved){
+                if(FigureIsWhite(57) == -1 && FigureIsWhite(58) == -1 && FigureIsWhite(59) == -1){
+                    buttons[58].setBackground(castlingHighlight);
+                }
+            }
+            if(!wKingHasMoved && !wRRookHasMoved){
+                if(FigureIsWhite(61) == -1 && FigureIsWhite(62) == -1){
+                    buttons[62].setBackground(castlingHighlight);
+                }
+            }
         }
         // Black
         else if(FigureIsWhite(FigureIndex) == 0 && !whitesTurn) {
@@ -566,12 +585,24 @@ public class Logic implements ActionListener{
                     }
                 }
             }
+            // Castling
+            if(!bKingHasMoved && !bLRookHasMoved){
+                if(FigureIsWhite(1) == -1 && FigureIsWhite(2) == -1 && FigureIsWhite(3) == -1){
+                    buttons[2].setBackground(castlingHighlight);
+                }
+            }
+            if(!bKingHasMoved && !bRRookHasMoved){
+                if(FigureIsWhite(5) == -1 && FigureIsWhite(6) == -1){
+                    buttons[6].setBackground(castlingHighlight);
+                }
+            }
         }
     }
 
     // Moves the figure to the pressed button if the button is already highlighted
     public void MoveFigure(ActionEvent e){
         int rememberButtonIndex = -1;
+        int castlingIndex = -1;
         for(int i=0; i<64; i++){
             if(buttons[i].getBackground() == stationaryHighlightColor){
                 rememberButtonIndex = i;
@@ -580,7 +611,9 @@ public class Logic implements ActionListener{
         }
         for(int i=0; i<64; i++){
             if(e.getSource() == buttons[i]){
+                // Normal figure movement
                 if(buttons[i].getBackground() == highlightColor){
+                    CheckCastlingMovement(rememberButtonIndex);
                     buttons[i].setName(buttons[rememberButtonIndex].getName());
                     buttons[i].setIcon(buttons[rememberButtonIndex].getIcon());
                     buttons[rememberButtonIndex].setName("0");
@@ -590,6 +623,35 @@ public class Logic implements ActionListener{
                     figureIsSelected = false;
                     CheckPawnToQueen();
                 }
+                // Does castling
+                else if(buttons[i].getBackground() == castlingHighlight){
+                    CheckCastlingMovement(rememberButtonIndex);
+                    buttons[i].setName(buttons[rememberButtonIndex].getName());
+                    buttons[i].setIcon(buttons[rememberButtonIndex].getIcon());
+                    buttons[rememberButtonIndex].setName("0");
+                    buttons[rememberButtonIndex].setIcon(null);
+                    if(buttons[i+1].getName().equals("r") || buttons[i+1].getName().equals("R")){
+                        rememberButtonIndex = i+1;
+                        castlingIndex = i-1;
+                    }
+                    else if(buttons[i-2].getName().equals("r") || buttons[i-2].getName().equals("R")){
+                        rememberButtonIndex = i-2;
+                        castlingIndex = i+1;
+                    }
+                    else{
+                        Recolor();
+                        figureIsSelected = false;
+                        break;
+                    }
+                    buttons[castlingIndex].setName(buttons[rememberButtonIndex].getName());
+                    buttons[castlingIndex].setIcon(buttons[rememberButtonIndex].getIcon());
+                    buttons[rememberButtonIndex].setName("0");
+                    buttons[rememberButtonIndex].setIcon(null);
+                    Recolor();
+                    WhosTurn();
+                    figureIsSelected = false;
+                }
+                // Reset if the figure is the same as selected one
                 else if(buttons[i].getBackground() == stationaryHighlightColor){
                     Recolor();
                     figureIsSelected = false;
@@ -682,6 +744,28 @@ public class Logic implements ActionListener{
                 buttons[i].setIcon(figures[10]);
                 break;
             }
+        }
+    }
+
+    // Check if rooks or king have moved
+    public void CheckCastlingMovement(int FigureIndex){
+        if(FigureIndex == 56 && buttons[FigureIndex].getName().equals("R")){
+            wLRookHasMoved = true;
+        }
+        else if(FigureIndex == 60 && buttons[FigureIndex].getName().equals("K")){
+            wKingHasMoved = true;
+        }
+        else if(FigureIndex == 63 && buttons[FigureIndex].getName().equals("R")){
+            wRRookHasMoved = true;
+        }
+        else if(FigureIndex == 0 && buttons[FigureIndex].getName().equals("r")){
+            bLRookHasMoved = true;
+        }
+        else if(FigureIndex == 4 && buttons[FigureIndex].getName().equals("k")){
+            bKingHasMoved = true;
+        }
+        else if(FigureIndex == 7 && buttons[FigureIndex].getName().equals("r")){
+            bRRookHasMoved = true;
         }
     }
 

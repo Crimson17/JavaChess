@@ -4,7 +4,6 @@ board buttons - done
 board colors - done
 moving in general - done
 eating - done
-
 Pawns - done
 Knights - done
 Bishops - done
@@ -12,8 +11,8 @@ Rooks - done
 Queens - done
 
 Kings - almost done (Have to add: King blocking if its being attacked by something)
+castling - almost done (Have to add: Castling can't be done if empty spots are being attacked)
 
-castling - not done
 checkmate - not done
 draw - not done
 
