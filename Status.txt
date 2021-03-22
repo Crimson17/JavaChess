@@ -11,7 +11,7 @@ Bishops - done
 Rooks - done
 Queens - done
 
-Kings - almost done (Have to add: Kings cant get close to eacher other)
+Kings - almost done (Have to add: King blocking if its being attacked by something)
 
 castling - not done
 checkmate - not done

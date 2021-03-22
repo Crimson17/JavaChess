@@ -122,22 +122,24 @@ public class Logic implements ActionListener{
             figureIsSelected = true;
             int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
             int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
+            int cords;
 
             for(int i=0; i<xCord.length; i++){
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
                 // Check if movement is inside the board
-                if(CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64){
+                if(cords >= 0 && cords < 64){
                     // Check if movement is to the left
                     if(xCord[i] < 0){
                         // Check if there is movement space to the left
                         if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                         // Check if there is movement space to the left
                         else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                     }
@@ -145,14 +147,14 @@ public class Logic implements ActionListener{
                     else{
                         // Check if there is movement space to the right
                         if(xCord[i] == 1 && FigureIndex % 8 < 7){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                         // Check if there is movement space to the right
                         else if(xCord[i] == 2 && FigureIndex % 8 < 6){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                     }
@@ -165,22 +167,24 @@ public class Logic implements ActionListener{
             figureIsSelected = true;
             int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
             int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
+            int cords;
 
             for(int i=0; i<xCord.length; i++){
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
                 // Check if movement is inside the board
-                if(CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64){
+                if(cords >= 0 && cords < 64){
                     // Check if movement is to the left
                     if(xCord[i] < 0){
                         // Check if there is movement space to the left
                         if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 0){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                         // Check if there is movement space to the left
                         else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 0){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                     }
@@ -188,14 +192,14 @@ public class Logic implements ActionListener{
                     else{
                         // Check if there is movement space to the right
                         if(xCord[i] == 1 && FigureIndex % 8 < 7){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 0){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                         // Check if there is movement space to the right
                         else if(xCord[i] == 2 && FigureIndex % 8 < 6){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) != 0){
+                                buttons[cords].setBackground(highlightColor);
                             }
                         }
                     }
@@ -213,43 +217,50 @@ public class Logic implements ActionListener{
             int yCord;
             int[] xIncr = {1, 1, -1, -1};
             int[] yIncr = {1, -1, -1, 1};
+            int cords;
 
             for(int i=0; i<4; i++){
                 xCord = xIncr[i];
                 yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
                 // First check of the top and bottom bounds
-                if(CalculateCords(FigureIndex, xCord, yCord) >= 0 && CalculateCords(FigureIndex, xCord, yCord) < 64){
+                if(cords >= 0 && cords < 64){
                     // First check of the side bounds
                     if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0)) {
                         // Highlight until the spot has a white figure
-                        while(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) != 1){
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 1){
+                                break;
+                            }
                             // Highlight empty spots
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == -1){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(FigureIsWhite(cords) == -1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                             // If the spot has a black figure highlight and stop
-                            else if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(FigureIsWhite(cords) == 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            if(IsOnLeftBound(CalculateCords(FigureIndex, xCord, yCord)) && xCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnRightBound(CalculateCords(FigureIndex, xCord, yCord)) && xCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnRightBound(cords) && xCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnTopBound(CalculateCords(FigureIndex, xCord, yCord)) && yCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnTopBound(cords) && yCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnBottomBound(CalculateCords(FigureIndex, xCord, yCord)) && yCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             xCord += xIncr[i];
@@ -267,43 +278,50 @@ public class Logic implements ActionListener{
             int yCord;
             int[] xIncr = {1, 1, -1, -1};
             int[] yIncr = {1, -1, -1, 1};
+            int cords;
 
             for(int i=0; i<4; i++){
                 xCord = xIncr[i];
                 yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
                 // First check of the top and bottom bounds
-                if(CalculateCords(FigureIndex, xCord, yCord) >= 0 && CalculateCords(FigureIndex, xCord, yCord) < 64){
+                if(cords >= 0 && cords < 64){
                     // First check of the side bounds
                     if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0)) {
                         // Highlight until the spot has a black figure
-                        while(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) != 0){
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 0){
+                                break;
+                            }
                             // Highlight empty spots
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == -1){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) == -1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                             // If the spot has a white figure highlight and stop
-                            else if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == 1){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(FigureIsWhite(cords) == 1){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            if(IsOnLeftBound(CalculateCords(FigureIndex, xCord, yCord)) && xCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnRightBound(CalculateCords(FigureIndex, xCord, yCord)) && xCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnRightBound(cords) && xCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnTopBound(CalculateCords(FigureIndex, xCord, yCord)) && yCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnTopBound(cords) && yCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnBottomBound(CalculateCords(FigureIndex, xCord, yCord)) && yCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             xCord += xIncr[i];
@@ -324,45 +342,50 @@ public class Logic implements ActionListener{
             int yCord;
             int[] xIncr = {1, -1, 0, 0};
             int[] yIncr = {0, 0, 1, -1};
+            int cords;
 
             for(int i=0; i<4; i++){
                 xCord = xIncr[i];
                 yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
                 // First check of the top and bottom bounds
-                if(CalculateCords(FigureIndex, xCord, yCord) >= 0 && CalculateCords(FigureIndex, xCord, yCord) < 64){
+                if(cords >= 0 && cords < 64){
                     // First check of the side bounds
                     if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0) || xCord == 0) {
                         // Highlight until the spot has a black figure
-                        while(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) != 1){
-                            System.out.println("xCord " + xCord);
-                            System.out.println("yCord " + yCord);
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 1){
+                                break;
+                            }
                             // Highlight empty spots
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == -1){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) == -1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                             // If the spot has a white figure highlight and stop
-                            else if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(FigureIsWhite(cords) == 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            if(IsOnLeftBound(CalculateCords(FigureIndex, xCord, yCord)) && xCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnRightBound(CalculateCords(FigureIndex, xCord, yCord))  && xCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnRightBound(cords)  && xCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnTopBound(CalculateCords(FigureIndex, xCord, yCord))  && yCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnTopBound(cords)  && yCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnBottomBound(CalculateCords(FigureIndex, xCord, yCord)) && yCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             xCord += xIncr[i];
@@ -380,45 +403,50 @@ public class Logic implements ActionListener{
             int yCord;
             int[] xIncr = {1, -1, 0, 0};
             int[] yIncr = {0, 0, 1, -1};
+            int cords;
 
             for(int i=0; i<4; i++){
                 xCord = xIncr[i];
                 yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
                 // First check of the top and bottom bounds
-                if(CalculateCords(FigureIndex, xCord, yCord) >= 0 && CalculateCords(FigureIndex, xCord, yCord) < 64){
+                if(cords >= 0 && cords < 64){
                     // First check of the side bounds
                     if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0) || xCord == 0) {
                         // Highlight until the spot has a black figure
-                        while(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) != 0){
-                            System.out.println("xCord " + xCord);
-                            System.out.println("yCord " + yCord);
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 0){
+                                break;
+                            }
                             // Highlight empty spots
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == -1){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            if(FigureIsWhite(cords) == -1){
+                                buttons[cords].setBackground(highlightColor);
                             }
                             // If the spot has a white figure highlight and stop
-                            else if(FigureIsWhite(CalculateCords(FigureIndex, xCord, yCord)) == 1){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(FigureIsWhite(cords) == 1){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            if(IsOnLeftBound(CalculateCords(FigureIndex, xCord, yCord)) && xCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnRightBound(CalculateCords(FigureIndex, xCord, yCord))  && xCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnRightBound(cords)  && xCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnTopBound(CalculateCords(FigureIndex, xCord, yCord))  && yCord > 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnTopBound(cords)  && yCord > 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             // Highlight and stop if it hits a bound
-                            else if(IsOnBottomBound(CalculateCords(FigureIndex, xCord, yCord)) && yCord < 0){
-                                buttons[CalculateCords(FigureIndex, xCord, yCord)].setBackground(highlightColor);
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                buttons[cords].setBackground(highlightColor);
                                 break;
                             }
                             xCord += xIncr[i];
@@ -441,32 +469,47 @@ public class Logic implements ActionListener{
             figureIsSelected = true;
             int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
             int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
+            boolean otherKingIsClose;
+            int cords, cords2;
 
             for(int i=0; i<8; i++) {
+                otherKingIsClose = false;
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
                 // Check of the top and bottom bounds
-                if (CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64) {
-                    // Check if movement is to the left
-                    if (xCord[i] < 0) {
-                        // Check if there is movement space to the left
-                        if(FigureIndex % 8 > 0){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                if (cords >= 0 && cords < 64) {
+                    for(int j=0; j<8; j++){
+                        cords2 = CalculateCords(cords, xCord[j], yCord[j]);
+                        if(cords2 >= 0 && cords2 < 64){
+                            if(buttons[cords2].getName().equals("k")){
+                                otherKingIsClose = true;
+                                break;
                             }
                         }
                     }
-                    // Check if movement is to the right
-                    else if(xCord[i] > 0){
-                        // Check if there is movement space to the right
-                        if(FigureIndex % 8 < 7){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                    if(!otherKingIsClose) {
+                        // Check if movement is to the left
+                        if (xCord[i] < 0) {
+                            // Check if there is movement space to the left
+                            if (FigureIndex % 8 > 0) {
+                                if (FigureIsWhite(cords) != 1) {
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
-                    }
-                    // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
-                    else{
-                        if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 1){
-                            buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                        // Check if movement is to the right
+                        else if (xCord[i] > 0) {
+                            // Check if there is movement space to the right
+                            if (FigureIndex % 8 < 7) {
+                                if (FigureIsWhite(cords) != 1) {
+                                    buttons[cords].setBackground(highlightColor);
+                                }
+                            }
+                        }
+                        // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
+                        else {
+                            if (FigureIsWhite(cords) != 1) {
+                                buttons[cords].setBackground(highlightColor);
+                            }
                         }
                     }
                 }
@@ -478,32 +521,47 @@ public class Logic implements ActionListener{
             figureIsSelected = true;
             int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
             int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
+            boolean otherKingIsClose;
+            int cords, cords2;
 
             for(int i=0; i<8; i++) {
+                otherKingIsClose = false;
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
                 // Check of the top and bottom bounds
-                if (CalculateCords(FigureIndex, xCord[i], yCord[i]) >= 0 && CalculateCords(FigureIndex, xCord[i], yCord[i]) < 64) {
-                    // Check if movement is to the left
-                    if (xCord[i] < 0) {
-                        // Check if there is movement space to the left
-                        if(FigureIndex % 8 > 0){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                if (cords >= 0 && cords < 64) {
+                    for(int j=0; j<8; j++){
+                        cords2 = CalculateCords(cords, xCord[j], yCord[j]);
+                        if(cords2 >= 0 && cords2 < 64){
+                            if(buttons[cords2].getName().equals("K")){
+                                otherKingIsClose = true;
+                                break;
                             }
                         }
                     }
-                    // Check if movement is to the right
-                    else if(xCord[i] > 0){
-                        // Check if there is movement space to the right
-                        if(FigureIndex % 8 < 7){
-                            if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
-                                buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                    if(!otherKingIsClose) {
+                        // Check if movement is to the left
+                        if (xCord[i] < 0) {
+                            // Check if there is movement space to the left
+                            if (FigureIndex % 8 > 0) {
+                                if (FigureIsWhite(cords) != 0) {
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
-                    }
-                    // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
-                    else{
-                        if(FigureIsWhite(CalculateCords(FigureIndex, xCord[i], yCord[i])) != 0){
-                            buttons[CalculateCords(FigureIndex, xCord[i], yCord[i])].setBackground(highlightColor);
+                        // Check if movement is to the right
+                        else if (xCord[i] > 0) {
+                            // Check if there is movement space to the right
+                            if (FigureIndex % 8 < 7) {
+                                if (FigureIsWhite(cords) != 0) {
+                                    buttons[cords].setBackground(highlightColor);
+                                }
+                            }
+                        }
+                        // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
+                        else {
+                            if (FigureIsWhite(cords) != 0) {
+                                buttons[cords].setBackground(highlightColor);
+                            }
                         }
                     }
                 }
