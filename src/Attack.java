@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class Attack {
 
-    JButton[] buttons = {};
+    JButton[] buttons = new JButton[64];
     String[] AttackMarks = new String[64];
 
     int whiteKingMovement;
@@ -10,6 +10,10 @@ public class Attack {
 
     Attack(){
         ResetMarks();
+        for(int i=0; i<64; i++){
+            buttons[i] = new JButton();
+            buttons[i].setName("0");
+        }
     }
 
     // Uses a highlighting function depending on what type of figure is selected

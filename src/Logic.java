@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 public class Logic implements ActionListener{
     Attack atk;
+    Attack futureAttack = new Attack();
 
     // Aren't the copies but actual buttons and tittleText :) (I finally get how classes work)
     JButton[] buttons = {};
@@ -22,15 +23,15 @@ public class Logic implements ActionListener{
     boolean bRRookHasMoved = false;
     boolean bLRookHasMoved = false;
 
-    boolean checkMate = false;
-
-    JButton[] rememberBoard = {};
+    boolean whiteCheck = false;
+    boolean blackCheck = false;
 
     Color highlightColor = new Color(137, 207, 240);
     Color stationaryHighlightColor = new Color(100, 170, 180);
     Color castlingHighlight = new Color(113, 194, 50);
     Color checkHighlight = new Color(232, 143, 26);
     Color checkMateHighlight = new Color(176, 25, 25);
+
 
     // Uses a highlighting function depending on what type of figure is selected
     public void HighlightFigure(ActionEvent e){
@@ -85,19 +86,28 @@ public class Logic implements ActionListener{
             if(FigureIndex > 7){
                 // Check if one spot in front is empty
                 if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
-                    buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
-                    // Check if spot two steps in front is empty
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[0], yCord[0]))){
+                        buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
+                    }
+                    // Check if spot two steps in front are empty
                     if(FigureIndex > 47 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
-                        buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                        if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                            buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                        }
                     }
                 }
+
                 // Check if the spot to side has an enemy
                 if(!IsOnRightBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 0){
-                    buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[2], yCord[2]))){
+                        buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
+                    }
                 }
                 // Check if the other spot to side has an enemy
                 if(!IsOnLeftBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 0){
-                    buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[3], yCord[3]))){
+                        buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
+                    }
                 }
             }
         }
@@ -112,19 +122,27 @@ public class Logic implements ActionListener{
             if(FigureIndex < 56){
                 // Check if one spot in front is empty
                 if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
-                    buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
-                    // Check if spot two steps in front is empty
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[0], yCord[0]))){
+                        buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
+                    }
+                    // Check if spot two steps in front are empty
                     if(FigureIndex < 16 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
-                        buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                        if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                            buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                        }
                     }
                 }
                 // Check if the spot to side has an enemy
                 if(!IsOnRightBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 1){
-                    buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                        buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
+                    }
                 }
                 // Check if the other spot to side has an enemy
                 if(!IsOnLeftBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 1){
-                    buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                        buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
+                    }
                 }
             }
         }
@@ -148,13 +166,17 @@ public class Logic implements ActionListener{
                         // Check if there is movement space to the left
                         if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
                             if(FigureIsWhite(cords) != 1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                         // Check if there is movement space to the left
                         else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
                             if(FigureIsWhite(cords) != 1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                     }
@@ -163,13 +185,17 @@ public class Logic implements ActionListener{
                         // Check if there is movement space to the right
                         if(xCord[i] == 1 && FigureIndex % 8 < 7){
                             if(FigureIsWhite(cords) != 1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                         // Check if there is movement space to the right
                         else if(xCord[i] == 2 && FigureIndex % 8 < 6){
                             if(FigureIsWhite(cords) != 1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                     }
@@ -193,13 +219,17 @@ public class Logic implements ActionListener{
                         // Check if there is movement space to the left
                         if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
                             if(FigureIsWhite(cords) != 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                         // Check if there is movement space to the left
                         else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
                             if(FigureIsWhite(cords) != 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                     }
@@ -208,13 +238,17 @@ public class Logic implements ActionListener{
                         // Check if there is movement space to the right
                         if(xCord[i] == 1 && FigureIndex % 8 < 7){
                             if(FigureIsWhite(cords) != 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                         // Check if there is movement space to the right
                         else if(xCord[i] == 2 && FigureIndex % 8 < 6){
                             if(FigureIsWhite(cords) != 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                     }
@@ -251,31 +285,43 @@ public class Logic implements ActionListener{
                             }
                             // Highlight empty spots
                             else if(FigureIsWhite(cords) == -1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                             // If the spot has a black figure highlight and stop
                             else if(FigureIsWhite(cords) == 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             if(IsOnLeftBound(cords) && xCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnRightBound(cords) && xCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnTopBound(cords) && yCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnBottomBound(cords) && yCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             xCord += xIncr[i];
@@ -312,31 +358,43 @@ public class Logic implements ActionListener{
                             }
                             // Highlight empty spots
                             if(FigureIsWhite(cords) == -1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                             // If the spot has a white figure highlight and stop
                             else if(FigureIsWhite(cords) == 1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             if(IsOnLeftBound(cords) && xCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnRightBound(cords) && xCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnTopBound(cords) && yCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnBottomBound(cords) && yCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             xCord += xIncr[i];
@@ -376,31 +434,43 @@ public class Logic implements ActionListener{
                             }
                             // Highlight empty spots
                             if(FigureIsWhite(cords) == -1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                             // If the spot has a white figure highlight and stop
                             else if(FigureIsWhite(cords) == 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             if(IsOnLeftBound(cords) && xCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnRightBound(cords)  && xCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnTopBound(cords)  && yCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnBottomBound(cords) && yCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             xCord += xIncr[i];
@@ -437,31 +507,43 @@ public class Logic implements ActionListener{
                             }
                             // Highlight empty spots
                             if(FigureIsWhite(cords) == -1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                             // If the spot has a white figure highlight and stop
                             else if(FigureIsWhite(cords) == 1){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             if(IsOnLeftBound(cords) && xCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnRightBound(cords)  && xCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnTopBound(cords)  && yCord > 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             // Highlight and stop if it hits a bound
                             else if(IsOnBottomBound(cords) && yCord < 0){
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                                 break;
                             }
                             xCord += xIncr[i];
@@ -820,14 +902,38 @@ public class Logic implements ActionListener{
         return false;
     }
 
+    public boolean TempCheck(JButton[] tempButtons){
+        for (int i = 0; i < 64; i++) {
+            futureAttack.MarkAttack(true);
+            if (tempButtons[i].getName().equals("k") && futureAttack.AttackMarks[i].equals("wa")) {
+                return true;
+            }
+            futureAttack.MarkAttack(false);
+            if(tempButtons[i].getName().equals("K") && futureAttack.AttackMarks[i].equals("ba")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean NotFutureCheck(int a, int b){
+        for(int i=0; i<64; i++){
+            futureAttack.buttons[i].setName(buttons[i].getName());
+        }
+
+        futureAttack.buttons[b].setName(futureAttack.buttons[a].getName());
+        futureAttack.buttons[a].setName("0");
+
+        return !TempCheck(futureAttack.buttons);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(figureIsSelected){
             MoveFigure(e);
             atk.MarkAttack(!whitesTurn);
-            WhiteCheck();
-            BlackCheck();
+            whiteCheck = WhiteCheck();
+            blackCheck = BlackCheck();
         }
         else{
             HighlightFigure(e);
