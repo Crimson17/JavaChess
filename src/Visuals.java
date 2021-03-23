@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Visuals{
     Logic logic = new Logic();
+    Attack atk = new Attack();
 
     JFrame frame = new JFrame();
     JPanel titlePanel = new JPanel();
@@ -38,6 +39,8 @@ public class Visuals{
         logic.buttons = buttons;
         logic.titleText = titleText;
         logic.figures = figures;
+        atk.buttons = buttons;
+        logic.atk = atk;
 
         // Setting up the window and buttons
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -9,12 +9,18 @@ Knights - done
 Bishops - done
 Rooks - done
 Queens - done
+castling - done
+Kings - done
 
-Kings - almost done (Have to add: King blocking if its being attacked by something)
-castling - almost done (Have to add: Castling can't be done if empty spots are being attacked)
-
+check - not done
 checkmate - not done
 draw - not done
+
+check parameters{
+	king can move - not done
+	figure can block check - not done
+	figure can eat the threat - not done
+}
 
 Personal use:
 00 01 02 03 04 05 06 07

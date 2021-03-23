@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Logic implements ActionListener{
+    Attack atk;
 
     // Aren't the copies but actual buttons and tittleText :) (I finally get how classes work)
     JButton[] buttons = {};
@@ -21,9 +22,15 @@ public class Logic implements ActionListener{
     boolean bRRookHasMoved = false;
     boolean bLRookHasMoved = false;
 
+    boolean checkMate = false;
+
+    JButton[] rememberBoard = {};
+
     Color highlightColor = new Color(137, 207, 240);
     Color stationaryHighlightColor = new Color(100, 170, 180);
     Color castlingHighlight = new Color(113, 194, 50);
+    Color checkHighlight = new Color(232, 143, 26);
+    Color checkMateHighlight = new Color(176, 25, 25);
 
     // Uses a highlighting function depending on what type of figure is selected
     public void HighlightFigure(ActionEvent e){
@@ -478,13 +485,20 @@ public class Logic implements ActionListener{
             int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
             int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
             boolean otherKingIsClose;
+            boolean spotAttacked;
             int cords, cords2;
 
             for(int i=0; i<8; i++) {
                 otherKingIsClose = false;
+                spotAttacked = false;
                 cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
                 // Check of the top and bottom bounds
                 if (cords >= 0 && cords < 64) {
+                    // Check if spot is being attacked
+                    if(atk.AttackMarks[CalculateCords(FigureIndex, xCord[i], yCord[i])].equals("ba")){
+                        spotAttacked = true;
+                    }
+                    // Check if other king is close
                     for(int j=0; j<8; j++){
                         cords2 = CalculateCords(cords, xCord[j], yCord[j]);
                         if(cords2 >= 0 && cords2 < 64){
@@ -494,7 +508,7 @@ public class Logic implements ActionListener{
                             }
                         }
                     }
-                    if(!otherKingIsClose) {
+                    if(!otherKingIsClose && !spotAttacked) {
                         // Check if movement is to the left
                         if (xCord[i] < 0) {
                             // Check if there is movement space to the left
@@ -513,7 +527,7 @@ public class Logic implements ActionListener{
                                 }
                             }
                         }
-                        // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
+                        // If x coordinate is 0 highlight spot because vertical bounds are already checked
                         else {
                             if (FigureIsWhite(cords) != 1) {
                                 buttons[cords].setBackground(highlightColor);
@@ -525,12 +539,16 @@ public class Logic implements ActionListener{
             // Castling
             if(!wKingHasMoved && !wLRookHasMoved){
                 if(FigureIsWhite(57) == -1 && FigureIsWhite(58) == -1 && FigureIsWhite(59) == -1){
-                    buttons[58].setBackground(castlingHighlight);
+                    if(atk.AttackMarks[57].equals("00") && atk.AttackMarks[58].equals("00") && atk.AttackMarks[59].equals("00")){
+                        buttons[58].setBackground(castlingHighlight);
+                    }
                 }
             }
             if(!wKingHasMoved && !wRRookHasMoved){
                 if(FigureIsWhite(61) == -1 && FigureIsWhite(62) == -1){
-                    buttons[62].setBackground(castlingHighlight);
+                    if(atk.AttackMarks[61].equals("00") && atk.AttackMarks[62].equals("00")){
+                        buttons[62].setBackground(castlingHighlight);
+                    }
                 }
             }
         }
@@ -541,13 +559,20 @@ public class Logic implements ActionListener{
             int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
             int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
             boolean otherKingIsClose;
+            boolean spotAttacked;
             int cords, cords2;
 
             for(int i=0; i<8; i++) {
                 otherKingIsClose = false;
+                spotAttacked = false;
                 cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
                 // Check of the top and bottom bounds
                 if (cords >= 0 && cords < 64) {
+                    // Check if spot is being attacked
+                    if(atk.AttackMarks[CalculateCords(FigureIndex, xCord[i], yCord[i])].equals("wa")){
+                        spotAttacked = true;
+                    }
+                    // Check if other king is close
                     for(int j=0; j<8; j++){
                         cords2 = CalculateCords(cords, xCord[j], yCord[j]);
                         if(cords2 >= 0 && cords2 < 64){
@@ -557,7 +582,7 @@ public class Logic implements ActionListener{
                             }
                         }
                     }
-                    if(!otherKingIsClose) {
+                    if(!otherKingIsClose && !spotAttacked) {
                         // Check if movement is to the left
                         if (xCord[i] < 0) {
                             // Check if there is movement space to the left
@@ -576,7 +601,7 @@ public class Logic implements ActionListener{
                                 }
                             }
                         }
-                        // If x coordinate is 0 highlight spot because vertical bounds are al ready checked
+                        // If x coordinate is 0 highlight spot because vertical bounds are already checked
                         else {
                             if (FigureIsWhite(cords) != 0) {
                                 buttons[cords].setBackground(highlightColor);
@@ -588,12 +613,16 @@ public class Logic implements ActionListener{
             // Castling
             if(!bKingHasMoved && !bLRookHasMoved){
                 if(FigureIsWhite(1) == -1 && FigureIsWhite(2) == -1 && FigureIsWhite(3) == -1){
-                    buttons[2].setBackground(castlingHighlight);
+                    if(atk.AttackMarks[1].equals("00") && atk.AttackMarks[2].equals("00") && atk.AttackMarks[3].equals("00")){
+                        buttons[2].setBackground(castlingHighlight);
+                    }
                 }
             }
             if(!bKingHasMoved && !bRRookHasMoved){
                 if(FigureIsWhite(5) == -1 && FigureIsWhite(6) == -1){
-                    buttons[6].setBackground(castlingHighlight);
+                    if(atk.AttackMarks[5].equals("00") && atk.AttackMarks[6].equals("00")){
+                        buttons[6].setBackground(castlingHighlight);
+                    }
                 }
             }
         }
@@ -602,7 +631,7 @@ public class Logic implements ActionListener{
     // Moves the figure to the pressed button if the button is already highlighted
     public void MoveFigure(ActionEvent e){
         int rememberButtonIndex = -1;
-        int castlingIndex = -1;
+        int castlingIndex;
         for(int i=0; i<64; i++){
             if(buttons[i].getBackground() == stationaryHighlightColor){
                 rememberButtonIndex = i;
@@ -769,10 +798,36 @@ public class Logic implements ActionListener{
         }
     }
 
+    public boolean WhiteCheck(){
+        for(int i=0; i<64; i++) {
+            if (buttons[i].getName().equals("K") && atk.AttackMarks[i].equals("ba") && buttons[i].getBackground() != stationaryHighlightColor) {
+                buttons[i].setBackground(checkHighlight);
+                titleText.setText("White check!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean BlackCheck() {
+        for (int i = 0; i < 64; i++) {
+            if (buttons[i].getName().equals("k") && atk.AttackMarks[i].equals("wa") && buttons[i].getBackground() != stationaryHighlightColor) {
+                buttons[i].setBackground(checkHighlight);
+                titleText.setText("Black check!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(figureIsSelected){
             MoveFigure(e);
+            atk.MarkAttack(!whitesTurn);
+            WhiteCheck();
+            BlackCheck();
         }
         else{
             HighlightFigure(e);
@@ -788,5 +843,6 @@ public class Logic implements ActionListener{
                 System.out.print(buttons[i].getName() + " ");
             }
         }
+        atk.DevTool(true);
     }
 }
