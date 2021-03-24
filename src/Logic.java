@@ -12,7 +12,6 @@ public class Logic implements ActionListener{
     JLabel titleText;
     ImageIcon[] figures;
 
-    boolean devTool = true;
     boolean figureIsSelected = false;
     boolean whitesTurn = true;
 
@@ -23,8 +22,8 @@ public class Logic implements ActionListener{
     boolean bRRookHasMoved = false;
     boolean bLRookHasMoved = false;
 
-    boolean whiteCheck = false;
-    boolean blackCheck = false;
+    int whiteAllowedMov;
+    int blackAllowedMov;
 
     Color highlightColor = new Color(137, 207, 240);
     Color stationaryHighlightColor = new Color(100, 170, 180);
@@ -88,11 +87,11 @@ public class Logic implements ActionListener{
                 if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
                     if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[0], yCord[0]))){
                         buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
-                    }
-                    // Check if spot two steps in front are empty
-                    if(FigureIndex > 47 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
-                        if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
-                            buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                        // Check if spot two steps in front are empty
+                        if(FigureIndex > 47 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
+                            if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                                buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                            }
                         }
                     }
                 }
@@ -124,11 +123,11 @@ public class Logic implements ActionListener{
                 if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
                     if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[0], yCord[0]))){
                         buttons[CalculateCords(FigureIndex, xCord[0], yCord[0])].setBackground(highlightColor);
-                    }
-                    // Check if spot two steps in front are empty
-                    if(FigureIndex < 16 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
-                        if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
-                            buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                        // Check if spot two steps in front are empty
+                        if(FigureIndex < 16 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
+                            if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                                buttons[CalculateCords(FigureIndex, xCord[1], yCord[1])].setBackground(highlightColor);
+                            }
                         }
                     }
                 }
@@ -905,11 +904,11 @@ public class Logic implements ActionListener{
     public boolean TempCheck(JButton[] tempButtons){
         for (int i = 0; i < 64; i++) {
             futureAttack.MarkAttack(true);
-            if (tempButtons[i].getName().equals("k") && futureAttack.AttackMarks[i].equals("wa")) {
+            if (!whitesTurn && tempButtons[i].getName().equals("k") && futureAttack.AttackMarks[i].equals("wa")) {
                 return true;
             }
             futureAttack.MarkAttack(false);
-            if(tempButtons[i].getName().equals("K") && futureAttack.AttackMarks[i].equals("ba")){
+            if(whitesTurn && tempButtons[i].getName().equals("K") && futureAttack.AttackMarks[i].equals("ba")){
                 return true;
             }
         }
@@ -932,23 +931,662 @@ public class Logic implements ActionListener{
         if(figureIsSelected){
             MoveFigure(e);
             atk.MarkAttack(!whitesTurn);
-            whiteCheck = WhiteCheck();
-            blackCheck = BlackCheck();
+            if(WhiteCheck() && AllowedMovement(true) == 0){
+                titleText.setText("White checkmate!");
+                for(int i=0; i<64; i++){
+                    if(buttons[i].getName().equals("K")){
+                        buttons[i].setBackground(checkMateHighlight);
+                    }
+                    buttons[i].setEnabled(false);
+                }
+            }
+            else if(BlackCheck() && AllowedMovement(false) == 0){
+                titleText.setText("Black checkmate!");
+                for(int i=0; i<64; i++){
+                    if(buttons[i].getName().equals("k")){
+                        buttons[i].setBackground(checkMateHighlight);
+                    }
+                    buttons[i].setEnabled(false);
+                }
+            }
+            else if((AllowedMovement(true) == 0 && !WhiteCheck()) || (AllowedMovement(false) == 0 && !BlackCheck())){
+                titleText.setText("Draw!");
+                for(int i=0; i<64; i++){
+                    buttons[i].setEnabled(false);
+                }
+            }
         }
         else{
             HighlightFigure(e);
         }
+    }
 
-        // Dev Tool
-        if (devTool) {
-            System.out.println("\n---------------\n");
-            for (int i = 0; i < 64; i++) {
-                if (i != 0 && i % 8 == 0) {
-                    System.out.println();
-                }
-                System.out.print(buttons[i].getName() + " ");
+    public int AllowedMovement(boolean white){
+        whiteAllowedMov = 0;
+        blackAllowedMov = 0;
+        CheckFigureMovement();
+        if(white){
+            System.out.println("White: " + whiteAllowedMov);
+            return whiteAllowedMov;
+        }
+        else{
+            System.out.println("Black: " + blackAllowedMov);
+            return blackAllowedMov;
+        }
+    }
+
+    // Uses a highlighting function depending on what type of figure is selected
+    public void CheckFigureMovement(){
+        for(int i=0; i<64; i++){
+            switch (buttons[i].getName()) {
+                case "P":
+                case "p":
+                    CheckPawnMovement(i);
+                    break;
+                case "N":
+                case "n":
+                    CheckKnightMovement(i);
+                    break;
+                case "B":
+                case "b":
+                    CheckBishopMovement(i);
+                    break;
+                case "R":
+                case "r":
+                    CheckRookMovement(i);
+                    break;
+                case "Q":
+                case "q":
+                    CheckQueenMovement(i);
+                    break;
+                case "K":
+                case "k":
+                    CheckKingMovement(i);
+                    break;
             }
         }
-        atk.DevTool(true);
+    }
+
+    // These are for specific figure highlighting, doesn't move the figure
+    public void CheckPawnMovement(int FigureIndex){
+        // White
+        if(FigureIsWhite(FigureIndex) == 1) {
+            int[] xCord = {0, 0, 1, -1};
+            int[] yCord = {1, 2, 1, 1};
+
+            // Check if pawn is on last row
+            if(FigureIndex > 7){
+                // Check if one spot in front is empty
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[0], yCord[0]))){
+                        whiteAllowedMov++;
+                        // Check if spot two steps in front are empty
+                        if(FigureIndex > 47 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
+                            whiteAllowedMov++;
+                        }
+                    }
+                }
+
+                // Check if the spot to side has an enemy
+                if(!IsOnRightBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 0){
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[2], yCord[2]))){
+                        whiteAllowedMov++;
+                    }
+                }
+                // Check if the other spot to side has an enemy
+                if(!IsOnLeftBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 0){
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[3], yCord[3]))){
+                        whiteAllowedMov++;
+                    }
+                }
+            }
+        }
+        // Black
+        else if(FigureIsWhite(FigureIndex) == 0){
+            int[] xCord = {0, 0, 1, -1};
+            int[] yCord = {-1, -2, -1, -1};
+
+            // Check if pawn is on last row
+            if(FigureIndex < 56){
+                // Check if one spot in front is empty
+                if(FigureIsWhite(CalculateCords(FigureIndex, xCord[0], yCord[0])) == -1){
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[0], yCord[0]))){
+                        blackAllowedMov++;
+                        // Check if spot two steps in front are empty
+                        if(FigureIndex < 16 && FigureIsWhite(CalculateCords(FigureIndex, xCord[1], yCord[1])) == -1){
+                            blackAllowedMov++;
+                        }
+                    }
+                }
+                // Check if the spot to side has an enemy
+                if(!IsOnRightBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 1){
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                        blackAllowedMov++;
+                    }
+                }
+                // Check if the other spot to side has an enemy
+                if(!IsOnLeftBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 1){
+                    if(NotFutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]))){
+                        blackAllowedMov++;
+                    }
+                }
+            }
+        }
+    }
+
+    public void CheckKnightMovement(int FigureIndex){
+        // White
+        if(FigureIsWhite(FigureIndex) == 1){
+            int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
+            int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
+            int cords;
+
+            for(int i=0; i<xCord.length; i++){
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
+                // Check if movement is inside the board
+                if(cords >= 0 && cords < 64){
+                    // Check if movement is to the left
+                    if(xCord[i] < 0){
+                        // Check if there is movement space to the left
+                        if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
+                            if(FigureIsWhite(cords) != 1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                            }
+                        }
+                        // Check if there is movement space to the left
+                        else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
+                            if(FigureIsWhite(cords) != 1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                            }
+                        }
+                    }
+                    // Movement is to the right
+                    else{
+                        // Check if there is movement space to the right
+                        if(xCord[i] == 1 && FigureIndex % 8 < 7){
+                            if(FigureIsWhite(cords) != 1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                            }
+                        }
+                        // Check if there is movement space to the right
+                        else if(xCord[i] == 2 && FigureIndex % 8 < 6){
+                            if(FigureIsWhite(cords) != 1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // Black
+        else if(FigureIsWhite(FigureIndex) == 0){
+            int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
+            int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
+            int cords;
+
+            for(int i=0; i<xCord.length; i++){
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
+                // Check if movement is inside the board
+                if(cords >= 0 && cords < 64){
+                    // Check if movement is to the left
+                    if(xCord[i] < 0){
+                        // Check if there is movement space to the left
+                        if(Math.abs(xCord[i]) == 1 && FigureIndex % 8 > 0){
+                            if(FigureIsWhite(cords) != 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                            }
+                        }
+                        // Check if there is movement space to the left
+                        else if(Math.abs(xCord[i]) == 2 && FigureIndex % 8 > 1){
+                            if(FigureIsWhite(cords) != 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                            }
+                        }
+                    }
+                    // Movement is to the right
+                    else{
+                        // Check if there is movement space to the right
+                        if(xCord[i] == 1 && FigureIndex % 8 < 7){
+                            if(FigureIsWhite(cords) != 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                            }
+                        }
+                        // Check if there is movement space to the right
+                        else if(xCord[i] == 2 && FigureIndex % 8 < 6){
+                            if(FigureIsWhite(cords) != 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void CheckBishopMovement(int FigureIndex){
+        // White
+        if(FigureIsWhite(FigureIndex) == 1){
+            int xCord;
+            int yCord;
+            int[] xIncr = {1, 1, -1, -1};
+            int[] yIncr = {1, -1, -1, 1};
+            int cords;
+
+            for(int i=0; i<4; i++){
+                xCord = xIncr[i];
+                yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
+                // First check of the top and bottom bounds
+                if(cords >= 0 && cords < 64){
+                    // First check of the side bounds
+                    if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0)) {
+                        // Highlight until the spot has a white figure
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 1){
+                                break;
+                            }
+                            // Highlight empty spots
+                            else if(FigureIsWhite(cords) == -1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                            }
+                            // If the spot has a black figure highlight and stop
+                            else if(FigureIsWhite(cords) == 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnRightBound(cords) && xCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnTopBound(cords) && yCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            xCord += xIncr[i];
+                            yCord += yIncr[i];
+                        }
+                    }
+                }
+            }
+        }
+        // Black
+        else if(FigureIsWhite(FigureIndex) == 0){
+            int xCord;
+            int yCord;
+            int[] xIncr = {1, 1, -1, -1};
+            int[] yIncr = {1, -1, -1, 1};
+            int cords;
+
+            for(int i=0; i<4; i++){
+                xCord = xIncr[i];
+                yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
+                // First check of the top and bottom bounds
+                if(cords >= 0 && cords < 64){
+                    // First check of the side bounds
+                    if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0)) {
+                        // Highlight until the spot has a black figure
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 0){
+                                break;
+                            }
+                            // Highlight empty spots
+                            if(FigureIsWhite(cords) == -1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                            }
+                            // If the spot has a white figure highlight and stop
+                            else if(FigureIsWhite(cords) == 1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnRightBound(cords) && xCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnTopBound(cords) && yCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            xCord += xIncr[i];
+                            yCord += yIncr[i];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void CheckRookMovement(int FigureIndex){
+        // White
+        if(FigureIsWhite(FigureIndex) == 1){
+            int xCord;
+            int yCord;
+            int[] xIncr = {1, -1, 0, 0};
+            int[] yIncr = {0, 0, 1, -1};
+            int cords;
+
+            for(int i=0; i<4; i++){
+                xCord = xIncr[i];
+                yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
+                // First check of the top and bottom bounds
+                if(cords >= 0 && cords < 64){
+                    // First check of the side bounds
+                    if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0) || xCord == 0) {
+                        // Highlight until the spot has a black figure
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 1){
+                                break;
+                            }
+                            // Highlight empty spots
+                            if(FigureIsWhite(cords) == -1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                            }
+                            // If the spot has a white figure highlight and stop
+                            else if(FigureIsWhite(cords) == 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnRightBound(cords)  && xCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnTopBound(cords)  && yCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    whiteAllowedMov++;
+                                }
+                                break;
+                            }
+                            xCord += xIncr[i];
+                            yCord += yIncr[i];
+                        }
+                    }
+                }
+            }
+        }
+        // Black
+        else if(FigureIsWhite(FigureIndex) == 0) {
+            int xCord;
+            int yCord;
+            int[] xIncr = {1, -1, 0, 0};
+            int[] yIncr = {0, 0, 1, -1};
+            int cords;
+
+            for(int i=0; i<4; i++){
+                xCord = xIncr[i];
+                yCord = yIncr[i];
+                cords = CalculateCords(FigureIndex, xCord, yCord);
+                // First check of the top and bottom bounds
+                if(cords >= 0 && cords < 64){
+                    // First check of the side bounds
+                    if((!IsOnLeftBound(FigureIndex) && xCord < 0) || (!IsOnRightBound(FigureIndex) && xCord > 0) || xCord == 0) {
+                        // Highlight until the spot has a black figure
+                        while(true){
+                            cords = CalculateCords(FigureIndex, xCord, yCord);
+                            // Check if figures are not the same color
+                            if(FigureIsWhite(cords) == 0){
+                                break;
+                            }
+                            // Highlight empty spots
+                            if(FigureIsWhite(cords) == -1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                            }
+                            // If the spot has a white figure highlight and stop
+                            else if(FigureIsWhite(cords) == 1){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            if(IsOnLeftBound(cords) && xCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnRightBound(cords)  && xCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnTopBound(cords)  && yCord > 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            // Highlight and stop if it hits a bound
+                            else if(IsOnBottomBound(cords) && yCord < 0){
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    blackAllowedMov++;
+                                }
+                                break;
+                            }
+                            xCord += xIncr[i];
+                            yCord += yIncr[i];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void CheckQueenMovement(int FigureIndex){
+        CheckRookMovement(FigureIndex);
+        CheckBishopMovement(FigureIndex);
+    }
+    public void CheckKingMovement(int FigureIndex){
+        // White
+        if(FigureIsWhite(FigureIndex) == 1) {
+            int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
+            int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
+            boolean otherKingIsClose;
+            boolean spotAttacked;
+            int cords, cords2;
+
+            for(int i=0; i<8; i++) {
+                otherKingIsClose = false;
+                spotAttacked = false;
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
+                // Check of the top and bottom bounds
+                if (cords >= 0 && cords < 64) {
+                    // Check if spot is being attacked
+                    if(atk.AttackMarks[CalculateCords(FigureIndex, xCord[i], yCord[i])].equals("ba")){
+                        spotAttacked = true;
+                    }
+                    // Check if other king is close
+                    for(int j=0; j<8; j++){
+                        cords2 = CalculateCords(cords, xCord[j], yCord[j]);
+                        if(cords2 >= 0 && cords2 < 64){
+                            if(buttons[cords2].getName().equals("k")){
+                                otherKingIsClose = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!otherKingIsClose && !spotAttacked) {
+                        // Check if movement is to the left
+                        if (xCord[i] < 0) {
+                            // Check if there is movement space to the left
+                            if (FigureIndex % 8 > 0) {
+                                if (FigureIsWhite(cords) != 1) {
+                                    whiteAllowedMov++;
+                                }
+                            }
+                        }
+                        // Check if movement is to the right
+                        else if (xCord[i] > 0) {
+                            // Check if there is movement space to the right
+                            if (FigureIndex % 8 < 7) {
+                                if (FigureIsWhite(cords) != 1) {
+                                    whiteAllowedMov++;
+                                }
+                            }
+                        }
+                        // If x coordinate is 0 highlight spot because vertical bounds are already checked
+                        else {
+                            if (FigureIsWhite(cords) != 1) {
+                                whiteAllowedMov++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // Black
+        else if(FigureIsWhite(FigureIndex) == 0) {
+            int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
+            int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
+            boolean otherKingIsClose;
+            boolean spotAttacked;
+            int cords, cords2;
+
+            for(int i=0; i<8; i++) {
+                otherKingIsClose = false;
+                spotAttacked = false;
+                cords = CalculateCords(FigureIndex, xCord[i], yCord[i]);
+                // Check of the top and bottom bounds
+                if (cords >= 0 && cords < 64) {
+                    // Check if spot is being attacked
+                    if(atk.AttackMarks[CalculateCords(FigureIndex, xCord[i], yCord[i])].equals("wa")){
+                        spotAttacked = true;
+                    }
+                    // Check if other king is close
+                    for(int j=0; j<8; j++){
+                        cords2 = CalculateCords(cords, xCord[j], yCord[j]);
+                        if(cords2 >= 0 && cords2 < 64){
+                            if(buttons[cords2].getName().equals("K")){
+                                otherKingIsClose = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!otherKingIsClose && !spotAttacked) {
+                        // Check if movement is to the left
+                        if (xCord[i] < 0) {
+                            // Check if there is movement space to the left
+                            if (FigureIndex % 8 > 0) {
+                                if (FigureIsWhite(cords) != 0) {
+                                    blackAllowedMov++;
+                                }
+                            }
+                        }
+                        // Check if movement is to the right
+                        else if (xCord[i] > 0) {
+                            // Check if there is movement space to the right
+                            if (FigureIndex % 8 < 7) {
+                                if (FigureIsWhite(cords) != 0) {
+                                    blackAllowedMov++;
+                                }
+                            }
+                        }
+                        // If x coordinate is 0 highlight spot because vertical bounds are already checked
+                        else {
+                            if (FigureIsWhite(cords) != 0) {
+                                blackAllowedMov++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

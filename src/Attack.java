@@ -26,27 +26,22 @@ public class Attack {
             case "N":
             case "n":
                 RenameKnight(i);
-
                 break;
             case "B":
             case "b":
                 RenameBishop(i);
-
                 break;
             case "R":
             case "r":
                 RenameRook(i);
-
                 break;
             case "Q":
             case "q":
                 RenameQueen(i);
-
                 break;
             case "K":
             case "k":
                 RenameKing(i);
-
                 break;
         }
     }
