@@ -595,7 +595,9 @@ public class Logic implements ActionListener{
                             // Check if there is movement space to the left
                             if (FigureIndex % 8 > 0) {
                                 if (FigureIsWhite(cords) != 1) {
-                                    buttons[cords].setBackground(highlightColor);
+                                    if(NotFutureCheck(FigureIndex, cords)){
+                                        buttons[cords].setBackground(highlightColor);
+                                    }
                                 }
                             }
                         }
@@ -604,14 +606,18 @@ public class Logic implements ActionListener{
                             // Check if there is movement space to the right
                             if (FigureIndex % 8 < 7) {
                                 if (FigureIsWhite(cords) != 1) {
-                                    buttons[cords].setBackground(highlightColor);
+                                    if(NotFutureCheck(FigureIndex, cords)){
+                                        buttons[cords].setBackground(highlightColor);
+                                    }
                                 }
                             }
                         }
                         // If x coordinate is 0 highlight spot because vertical bounds are already checked
                         else {
                             if (FigureIsWhite(cords) != 1) {
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                     }
@@ -669,7 +675,9 @@ public class Logic implements ActionListener{
                             // Check if there is movement space to the left
                             if (FigureIndex % 8 > 0) {
                                 if (FigureIsWhite(cords) != 0) {
-                                    buttons[cords].setBackground(highlightColor);
+                                    if(NotFutureCheck(FigureIndex, cords)){
+                                        buttons[cords].setBackground(highlightColor);
+                                    }
                                 }
                             }
                         }
@@ -678,14 +686,18 @@ public class Logic implements ActionListener{
                             // Check if there is movement space to the right
                             if (FigureIndex % 8 < 7) {
                                 if (FigureIsWhite(cords) != 0) {
-                                    buttons[cords].setBackground(highlightColor);
+                                    if(NotFutureCheck(FigureIndex, cords)){
+                                        buttons[cords].setBackground(highlightColor);
+                                    }
                                 }
                             }
                         }
                         // If x coordinate is 0 highlight spot because vertical bounds are already checked
                         else {
                             if (FigureIsWhite(cords) != 0) {
-                                buttons[cords].setBackground(highlightColor);
+                                if(NotFutureCheck(FigureIndex, cords)){
+                                    buttons[cords].setBackground(highlightColor);
+                                }
                             }
                         }
                     }
