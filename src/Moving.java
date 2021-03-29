@@ -31,7 +31,9 @@ public class Moving implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(figureIsSelected){
+            // Do movement first
             MoveFigure(e);
+            // Check for white check
             if(c.WhiteCheck(buttons)){
                 for(int i=0; i<64; i++){
                     if(buttons[i].getName().equals("K")){
@@ -40,6 +42,7 @@ public class Moving implements ActionListener{
                     }
                 }
             }
+            // Check for black check
             else if(c.BlackCheck(buttons)){
                 for(int i=0; i<64; i++){
                     if(buttons[i].getName().equals("k")){
@@ -48,6 +51,7 @@ public class Moving implements ActionListener{
                     }
                 }
             }
+            // Check for white cm
             if(c.WhiteCheck(buttons) && m.AllowedMovement(true, buttons) == 0){
                 titleText.setText("White checkmate!");
                 for(int i=0; i<64; i++){
@@ -57,6 +61,7 @@ public class Moving implements ActionListener{
                     buttons[i].setEnabled(false);
                 }
             }
+            // Check for black cm
             else if(c.BlackCheck(buttons) && m.AllowedMovement(false, buttons) == 0){
                 titleText.setText("Black checkmate!");
                 for(int i=0; i<64; i++){
@@ -66,6 +71,8 @@ public class Moving implements ActionListener{
                     buttons[i].setEnabled(false);
                 }
             }
+
+            // Check for draw
             else if((m.AllowedMovement(true, buttons) == 0 && !c.WhiteCheck(buttons)) || (m.AllowedMovement(false, buttons) == 0 && !c.BlackCheck(buttons))){
                 titleText.setText("Draw!");
                 for(int i=0; i<64; i++){
