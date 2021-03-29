@@ -31,7 +31,10 @@ Requirements:
 2. FEN loader - done
 3. Main Menu (Singleplayer, Multiplayer, quit, *Maybe options*(To change board colors)
 4. TCP connection
-5. 
+
+optional stuff:
+Play sound on figure select and move
+Add volume option to the OPTIONS menu
 
 Personal use:
 00 01 02 03 04 05 06 07

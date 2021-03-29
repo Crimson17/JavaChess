@@ -32,8 +32,9 @@ public class Menu {
         mainMenu.setSize(windowWidth,windowHeight);
         mainMenu.getContentPane().setBackground(new Color(50, 50, 50));
         mainMenu.setLayout(new BorderLayout());
-        mainMenu.setVisible(true);
+        mainMenu.setLocation(screenSize.width/2-windowWidth/2, (int)(screenSize.height/2.05-windowHeight/2));
         mainMenu.setResizable(false);
+        mainMenu.setVisible(true);
 
         menuPanel.setLayout(new BorderLayout());
         menuPanel.setBounds(0,0,windowWidth,windowHeight);
