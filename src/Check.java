@@ -8,7 +8,7 @@ public class Check {
     int whiteKingMovement;
     int blackKingMovement;
 
-
+    // Check for check after the move( works for both colors)
     public boolean FutureCheck(int a, int b, JButton[] buttons, boolean checkWhite){
         JButton[] tempButtons = new JButton[64];
         for(int i=0; i<64; i++){
@@ -31,6 +31,7 @@ public class Check {
         }
     }
 
+    // Check if it is a white check currently
     public boolean WhiteCheck(JButton[] buttons){
         MarkAttacks(false, buttons);
         for(int i=0; i<64; i++) {
@@ -41,6 +42,7 @@ public class Check {
         return false;
     }
 
+    // Check if it is a black check currently
     public boolean BlackCheck(JButton[] buttons) {
         MarkAttacks(true, buttons);
         for (int i = 0; i < 64; i++) {

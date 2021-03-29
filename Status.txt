@@ -15,6 +15,23 @@ check - done
 checkmate - done
 draw - done
 
+ONLINE: 
+Steps:
+1. White makes a move.
+2. FEN is made
+3. FEN is sent to client
+4. Client loads FEN
+5. Client makes a move
+6. FEN is made
+7. FEN is sent to server
+8. repeat until draw or checkmate
+
+Requirements:
+1. FEN maker - done
+2. FEN loader - done
+3. Main Menu (Singleplayer, Multiplayer, quit, *Maybe options*(To change board colors)
+4. TCP connection
+5. 
 
 Personal use:
 00 01 02 03 04 05 06 07

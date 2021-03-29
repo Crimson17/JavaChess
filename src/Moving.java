@@ -13,7 +13,7 @@ public class Moving implements ActionListener{
     ImageIcon[] figures;
 
     boolean figureIsSelected = false;
-    boolean whitesTurn = true;
+    boolean whitesTurn = false;
 
     boolean wKingHasMoved = false;
     boolean wRRookHasMoved = false;
@@ -53,7 +53,7 @@ public class Moving implements ActionListener{
             }
             // Check for white cm
             if(c.WhiteCheck(buttons) && m.AllowedMovement(true, buttons) == 0){
-                titleText.setText("White checkmate!");
+                titleText.setText("White checkmated!");
                 for(int i=0; i<64; i++){
                     if(buttons[i].getName().equals("K")){
                         buttons[i].setBackground(checkMateHighlight);
@@ -63,7 +63,7 @@ public class Moving implements ActionListener{
             }
             // Check for black cm
             else if(c.BlackCheck(buttons) && m.AllowedMovement(false, buttons) == 0){
-                titleText.setText("Black checkmate!");
+                titleText.setText("Black checkmated!");
                 for(int i=0; i<64; i++){
                     if(buttons[i].getName().equals("k")){
                         buttons[i].setBackground(checkMateHighlight);
@@ -678,7 +678,7 @@ public class Moving implements ActionListener{
                 }
             }
             // Castling
-            if(!wKingHasMoved && !wLRookHasMoved){
+            if(!wKingHasMoved && !wLRookHasMoved && FigureIndex == 60){
                 if(FigureIsWhite(57) == -1 && FigureIsWhite(58) == -1 && FigureIsWhite(59) == -1){
                     c.MarkAttacks(false, buttons);
                     if(c.AttackMarks[57].equals("00") && c.AttackMarks[58].equals("00") && c.AttackMarks[59].equals("00")){
@@ -686,7 +686,7 @@ public class Moving implements ActionListener{
                     }
                 }
             }
-            if(!wKingHasMoved && !wRRookHasMoved){
+            if(!wKingHasMoved && !wRRookHasMoved && FigureIndex == 60){
                 if(FigureIsWhite(61) == -1 && FigureIsWhite(62) == -1){
                     c.MarkAttacks(false, buttons);
                     if(c.AttackMarks[61].equals("00") && c.AttackMarks[62].equals("00")){
@@ -761,7 +761,7 @@ public class Moving implements ActionListener{
                 }
             }
             // Castling
-            if(!bKingHasMoved && !bLRookHasMoved){
+            if(!bKingHasMoved && !bLRookHasMoved && FigureIndex == 4){
                 if(FigureIsWhite(1) == -1 && FigureIsWhite(2) == -1 && FigureIsWhite(3) == -1){
                     c.MarkAttacks(true, buttons);
                     if(c.AttackMarks[1].equals("00") && c.AttackMarks[2].equals("00") && c.AttackMarks[3].equals("00")){
@@ -769,7 +769,7 @@ public class Moving implements ActionListener{
                     }
                 }
             }
-            if(!bKingHasMoved && !bRRookHasMoved){
+            if(!bKingHasMoved && !bRRookHasMoved && FigureIndex == 4){
                 if(FigureIsWhite(5) == -1 && FigureIsWhite(6) == -1){
                     c.MarkAttacks(true, buttons);
                     if(c.AttackMarks[5].equals("00") && c.AttackMarks[6].equals("00")){
@@ -933,7 +933,7 @@ public class Moving implements ActionListener{
         if(FigureIndex == 56 && buttons[FigureIndex].getName().equals("R")){
             wLRookHasMoved = true;
         }
-        else if(FigureIndex == 60 && buttons[FigureIndex].getName().equals("K")){
+        else if(buttons[FigureIndex].getName().equals("K")){
             wKingHasMoved = true;
         }
         else if(FigureIndex == 63 && buttons[FigureIndex].getName().equals("R")){
@@ -942,7 +942,7 @@ public class Moving implements ActionListener{
         else if(FigureIndex == 0 && buttons[FigureIndex].getName().equals("r")){
             bLRookHasMoved = true;
         }
-        else if(FigureIndex == 4 && buttons[FigureIndex].getName().equals("k")){
+        else if(buttons[FigureIndex].getName().equals("k")){
             bKingHasMoved = true;
         }
         else if(FigureIndex == 7 && buttons[FigureIndex].getName().equals("r")){
