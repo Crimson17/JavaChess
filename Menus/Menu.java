@@ -22,7 +22,7 @@ public class Menu {
     JButton quitButton = new JButton();
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int windowWidth = (int)screenSize.getHeight() - 100;
+    int windowWidth = (int)(screenSize.getHeight() - 100);
     int windowHeight = windowWidth + (windowWidth/25);
 
     Menu(){

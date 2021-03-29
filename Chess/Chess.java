@@ -9,7 +9,7 @@ public class Chess {
     ESC e = new ESC();
     Quit q = new Quit();
     Resume r = new Resume();
-    MMenu mMenu = new MMenu();
+    mMenu mMenu = new mMenu();
 
     JFrame frame = new JFrame();
     JPanel titlePanel = new JPanel();
@@ -111,7 +111,7 @@ public class Chess {
 
         escPanel.setVisible(false);
         escPanel.setLayout(new BorderLayout());
-        escPanel.setBounds(windowWidth/4,windowHeight/12, windowWidth/2, (int)(windowHeight/3*(1.65)));
+        escPanel.setBounds(windowWidth/4,windowHeight/12, windowWidth/2, (int)(windowHeight/1.8));
         escPanel.setBackground(new Color(60, 60, 60));
 
         resumePanel.setVisible(false);
