@@ -13,7 +13,7 @@ public class Moving implements ActionListener{
     ImageIcon[] figures;
 
     boolean figureIsSelected = false;
-    boolean whitesTurn = false;
+    boolean whitesTurn = true;
 
     boolean wKingHasMoved = false;
     boolean wRRookHasMoved = false;

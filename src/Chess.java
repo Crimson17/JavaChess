@@ -18,6 +18,9 @@ public class Chess {
     int windowWidth = (int)screenSize.getHeight() - 100;
     int windowHeight = windowWidth + (windowWidth/25);
 
+    String DefaultFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    String WipFEN = "8/1Q3Pn1/3B4/1N6/4k1q1/2R5/1p1K1b2/7r";
+
     // Loading all image icons from res folder
     ImageIcon[] figures = {
             resImageToIcon("w_pawn.png"),
@@ -81,7 +84,6 @@ public class Chess {
         frame.add(buttonPanel);
 
         LoadFEN(DefaultFEN, buttons);
-        System.out.println(MakeFEN(buttons));
     }
 
     // Loading Image from res folder, scale the image to fit the button and return as ImageIcon
@@ -90,9 +92,6 @@ public class Chess {
         Image scaledImage = loadedImage.getScaledInstance(windowWidth/8, windowWidth/8, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }
-
-    String DefaultFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-    String WipFEN = "8/1Q3Pn1/3B4/1N6/4k1q1/2R5/1p1K1b2/7r";
 
     // Loading FEN type of key into the board
     public void LoadFEN(String key, JButton[] buttons){
