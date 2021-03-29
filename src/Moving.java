@@ -179,13 +179,13 @@ public class Moving implements ActionListener{
                 }
                 // Check if the spot to side has an enemy
                 if(!IsOnRightBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[2], yCord[2])) == 1){
-                    if(!c.FutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]), buttons, false)){
+                    if(!c.FutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[2], yCord[2]), buttons, false)){
                         buttons[CalculateCords(FigureIndex, xCord[2], yCord[2])].setBackground(highlightColor);
                     }
                 }
                 // Check if the other spot to side has an enemy
                 if(!IsOnLeftBound(FigureIndex) && FigureIsWhite(CalculateCords(FigureIndex, xCord[3], yCord[3])) == 1){
-                    if(!c.FutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[1], yCord[1]), buttons, false)){
+                    if(!c.FutureCheck(FigureIndex, CalculateCords(FigureIndex, xCord[3], yCord[3]), buttons, false)){
                         buttons[CalculateCords(FigureIndex, xCord[3], yCord[3])].setBackground(highlightColor);
                     }
                 }
