@@ -1,55 +1,115 @@
 import javax.swing.*;
+import java.awt.*;
 
-public class Attack {
+public class Check {
 
-    JButton[] buttons = new JButton[64];
     String[] AttackMarks = new String[64];
 
     int whiteKingMovement;
     int blackKingMovement;
 
-    Attack(){
-        ResetMarks();
+
+    public boolean FutureCheck(int a, int b, JButton[] buttons, boolean checkWhite){
+        JButton[] tempButtons = new JButton[64];
         for(int i=0; i<64; i++){
-            buttons[i] = new JButton();
-            buttons[i].setName("0");
+            tempButtons[i] = new JButton();
+            tempButtons[i].setName(buttons[i].getName());
+        }
+
+        tempButtons[b].setName(tempButtons[a].getName());
+        tempButtons[a].setName("0");
+
+        return CheckForCheck(tempButtons, checkWhite);
+    }
+
+    public boolean CheckForCheck(JButton[] buttons, boolean checkWhite){
+        if(checkWhite){
+            return WhiteCheck(buttons);
+        }
+        else{
+            return BlackCheck(buttons);
+        }
+    }
+
+    public boolean WhiteCheck(JButton[] buttons){
+        MarkAttacks(false, buttons);
+        for(int i=0; i<64; i++) {
+            if (buttons[i].getName().equals("K")) {
+                return AttackMarks[i].equals("ba");
+            }
+        }
+        return false;
+    }
+
+    public boolean BlackCheck(JButton[] buttons) {
+        MarkAttacks(true, buttons);
+        for (int i = 0; i < 64; i++) {
+            if (buttons[i].getName().equals("k")) {
+                return AttackMarks[i].equals("wa");
+            }
+        }
+        return false;
+    }
+
+    public void MarkAttacks(boolean markWhiteAtk, JButton[] buttons){
+        if(markWhiteAtk){
+            ResetMarks();
+            for(int i=0; i<64; i++){
+                if(FigureIsWhite(i, buttons) == 1){
+                    CheckAttacks(i, buttons);
+                }
+            }
+        }
+        else{
+            ResetMarks();
+            for(int i=0; i<64; i++){
+                if(FigureIsWhite(i, buttons) == 0){
+                    CheckAttacks(i, buttons);
+                }
+            }
+        }
+    }
+
+    public void ResetMarks(){
+        for(int i=0; i<64; i++){
+            AttackMarks[i] = "00";
         }
     }
 
     // Uses a highlighting function depending on what type of figure is selected
-    public void RenameFigure(int i){
+    public void CheckAttacks(int i, JButton[] buttons){
         switch (buttons[i].getName()) {
             case "P":
             case "p":
-                RenamePawn(i);
+                PawnAttack(i, buttons);
                 break;
             case "N":
             case "n":
-                RenameKnight(i);
+                KnightAttack(i, buttons);
                 break;
             case "B":
             case "b":
-                RenameBishop(i);
+                BishopAttack(i, buttons);
                 break;
             case "R":
             case "r":
-                RenameRook(i);
+                RookAttack(i, buttons);
                 break;
             case "Q":
             case "q":
-                RenameQueen(i);
+                QueenAttack(i, buttons);
                 break;
             case "K":
             case "k":
-                RenameKing(i);
+                KingAttack(i, buttons);
                 break;
         }
     }
 
     // These are for specific figure highlighting, doesn't move the figure
-    public void RenamePawn(int FigureIndex){
+    public void PawnAttack(int FigureIndex, JButton[] buttons){
         // White
-        if(FigureIsWhite(FigureIndex) == 1) {
+        if(FigureIsWhite(FigureIndex, buttons) == 1) {
             int[] xCord = {0, 0, 1, -1};
             int[] yCord = {1, 2, 1, 1};
 
@@ -66,7 +126,7 @@ public class Attack {
             }
         }
         // Black
-        else if(FigureIsWhite(FigureIndex) == 0){
+        else if(FigureIsWhite(FigureIndex, buttons) == 0){
             int[] xCord = {0, 0, 1, -1};
             int[] yCord = {-1, -2, -1, -1};
 
@@ -84,9 +144,9 @@ public class Attack {
         }
     }
 
-    public void RenameKnight(int FigureIndex){
+    public void KnightAttack(int FigureIndex, JButton[] buttons){
         // White
-        if(FigureIsWhite(FigureIndex) == 1){
+        if(FigureIsWhite(FigureIndex, buttons) == 1){
             int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
             int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
             int cords;
@@ -121,7 +181,7 @@ public class Attack {
             }
         }
         // Black
-        else if(FigureIsWhite(FigureIndex) == 0){
+        else if(FigureIsWhite(FigureIndex, buttons) == 0){
             int[] xCord = {-1, 1, 2, 2, -1, 1, -2, -2};
             int[] yCord = {2, 2, 1, -1, -2, -2, -1, 1};
             int cords;
@@ -157,9 +217,9 @@ public class Attack {
         }
     }
 
-    public void RenameBishop(int FigureIndex){
+    public void BishopAttack(int FigureIndex, JButton[] buttons){
         // White
-        if(FigureIsWhite(FigureIndex) == 1){
+        if(FigureIsWhite(FigureIndex, buttons) == 1){
             int xCord;
             int yCord;
             int[] xIncr = {1, 1, -1, -1};
@@ -178,16 +238,16 @@ public class Attack {
                         while(true){
                             cords = CalculateCords(FigureIndex, xCord, yCord);
                             // Check if figures are not the same color
-                            if(FigureIsWhite(cords) == 1){
+                            if(FigureIsWhite(cords, buttons) == 1){
                                 AttackMarks[cords] = ("wa");
                                 break;
                             }
                             // Highlight empty spots
-                            else if(FigureIsWhite(cords) == -1){
+                            else if(FigureIsWhite(cords, buttons) == -1){
                                 AttackMarks[cords] = ("wa");
                             }
                             // If the spot has a black figure highlight and stop
-                            else if(FigureIsWhite(cords) == 0){
+                            else if(FigureIsWhite(cords, buttons) == 0){
                                 AttackMarks[cords] = ("wa");
                                 break;
                             }
@@ -219,7 +279,7 @@ public class Attack {
             }
         }
         // Black
-        else if(FigureIsWhite(FigureIndex) == 0){
+        else if(FigureIsWhite(FigureIndex, buttons) == 0){
             int xCord;
             int yCord;
             int[] xIncr = {1, 1, -1, -1};
@@ -238,16 +298,16 @@ public class Attack {
                         while(true){
                             cords = CalculateCords(FigureIndex, xCord, yCord);
                             // Check if figures are not the same color
-                            if(FigureIsWhite(cords) == 0){
+                            if(FigureIsWhite(cords, buttons) == 0){
                                 AttackMarks[cords] = ("ba");
                                 break;
                             }
                             // Highlight empty spots
-                            if(FigureIsWhite(cords) == -1){
+                            if(FigureIsWhite(cords, buttons) == -1){
                                 AttackMarks[cords] = ("ba");
                             }
                             // If the spot has a white figure highlight and stop
-                            else if(FigureIsWhite(cords) == 1){
+                            else if(FigureIsWhite(cords, buttons) == 1){
                                 AttackMarks[cords] = ("ba");
                                 break;
                             }
@@ -280,9 +340,9 @@ public class Attack {
         }
     }
 
-    public void RenameRook(int FigureIndex){
+    public void RookAttack(int FigureIndex, JButton[] buttons){
         // White
-        if(FigureIsWhite(FigureIndex) == 1){
+        if(FigureIsWhite(FigureIndex, buttons) == 1){
             int xCord;
             int yCord;
             int[] xIncr = {1, -1, 0, 0};
@@ -301,16 +361,16 @@ public class Attack {
                         while(true){
                             cords = CalculateCords(FigureIndex, xCord, yCord);
                             // Check if figures are not the same color
-                            if(FigureIsWhite(cords) == 1){
+                            if(FigureIsWhite(cords, buttons) == 1){
                                 AttackMarks[cords] = ("wa");
                                 break;
                             }
                             // Highlight empty spots
-                            if(FigureIsWhite(cords) == -1){
+                            if(FigureIsWhite(cords, buttons) == -1){
                                 AttackMarks[cords] = ("wa");
                             }
                             // If the spot has a white figure highlight and stop
-                            else if(FigureIsWhite(cords) == 0){
+                            else if(FigureIsWhite(cords, buttons) == 0){
                                 AttackMarks[cords] = ("wa");
                                 break;
                             }
@@ -342,7 +402,7 @@ public class Attack {
             }
         }
         // Black
-        else if(FigureIsWhite(FigureIndex) == 0) {
+        else if(FigureIsWhite(FigureIndex, buttons) == 0) {
             int xCord;
             int yCord;
             int[] xIncr = {1, -1, 0, 0};
@@ -361,16 +421,16 @@ public class Attack {
                         while(true){
                             cords = CalculateCords(FigureIndex, xCord, yCord);
                             // Check if figures are not the same color
-                            if(FigureIsWhite(cords) == 0){
+                            if(FigureIsWhite(cords, buttons) == 0){
                                 AttackMarks[cords] = ("ba");
                                 break;
                             }
                             // Highlight empty spots
-                            if(FigureIsWhite(cords) == -1){
+                            if(FigureIsWhite(cords, buttons) == -1){
                                 AttackMarks[cords] = ("ba");
                             }
                             // If the spot has a white figure highlight and stop
-                            else if(FigureIsWhite(cords) == 1){
+                            else if(FigureIsWhite(cords, buttons) == 1){
                                 AttackMarks[cords] = ("ba");
                                 break;
                             }
@@ -403,16 +463,16 @@ public class Attack {
         }
     }
 
-    public void RenameQueen(int FigureIndex){
-        RenameRook(FigureIndex);
-        RenameBishop(FigureIndex);
+    public void QueenAttack(int FigureIndex, JButton[] buttons){
+        RookAttack(FigureIndex, buttons);
+        BishopAttack(FigureIndex, buttons);
     }
 
-    public void RenameKing(int FigureIndex){
+    public void KingAttack(int FigureIndex, JButton[] buttons){
         whiteKingMovement = 0;
         blackKingMovement = 0;
         // White
-        if(FigureIsWhite(FigureIndex) == 1) {
+        if(FigureIsWhite(FigureIndex, buttons) == 1) {
             int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
             int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
             int cords;
@@ -425,7 +485,7 @@ public class Attack {
                     if (xCord[i] < 0) {
                         // Check if there is movement space to the left
                         if (FigureIndex % 8 > 0) {
-                            if (FigureIsWhite(cords) != 1) {
+                            if (FigureIsWhite(cords, buttons) != 1) {
                                 AttackMarks[cords] = ("wa");
                                 whiteKingMovement++;
                             }
@@ -435,7 +495,7 @@ public class Attack {
                     else if (xCord[i] > 0) {
                         // Check if there is movement space to the right
                         if (FigureIndex % 8 < 7) {
-                            if (FigureIsWhite(cords) != 1) {
+                            if (FigureIsWhite(cords, buttons) != 1) {
                                 AttackMarks[cords] = ("wa");
                                 whiteKingMovement++;
                             }
@@ -443,7 +503,7 @@ public class Attack {
                     }
                     // If x coordinate is 0 highlight spot because vertical bounds are already checked
                     else {
-                        if (FigureIsWhite(cords) != 1) {
+                        if (FigureIsWhite(cords, buttons) != 1) {
                             AttackMarks[cords] = ("wa");
                             whiteKingMovement++;
                         }
@@ -452,7 +512,7 @@ public class Attack {
             }
         }
         // Black
-        else if(FigureIsWhite(FigureIndex) == 0) {
+        else if(FigureIsWhite(FigureIndex, buttons) == 0) {
             int[] xCord = {1, -1, 0, 0, 1, 1, -1, -1};
             int[] yCord = {0, 0, 1, -1, 1, -1, -1, 1};
             int cords;
@@ -465,7 +525,7 @@ public class Attack {
                     if (xCord[i] < 0) {
                         // Check if there is movement space to the left
                         if (FigureIndex % 8 > 0) {
-                            if (FigureIsWhite(cords) != 0) {
+                            if (FigureIsWhite(cords, buttons) != 0) {
                                 AttackMarks[cords] = ("ba");
                                 blackKingMovement++;
                             }
@@ -475,7 +535,7 @@ public class Attack {
                     else if (xCord[i] > 0) {
                         // Check if there is movement space to the right
                         if (FigureIndex % 8 < 7) {
-                            if (FigureIsWhite(cords) != 0) {
+                            if (FigureIsWhite(cords, buttons) != 0) {
                                 AttackMarks[cords] = ("ba");
                                 blackKingMovement++;
                             }
@@ -483,7 +543,7 @@ public class Attack {
                     }
                     // If x coordinate is 0 highlight spot because vertical bounds are already checked
                     else {
-                        if (FigureIsWhite(cords) != 0) {
+                        if (FigureIsWhite(cords, buttons) != 0) {
                             AttackMarks[cords] = ("ba");
                             blackKingMovement++;
                         }
@@ -519,7 +579,7 @@ public class Attack {
     }
 
     // Checks if the figure is white, black or empty
-    public int FigureIsWhite(int d){
+    public int FigureIsWhite(int d, JButton[] buttons){
         String figureName = buttons[d].getName();
         String[] whites = {"P", "N", "B", "R", "Q", "K"};
         if(buttons[d].getName().equals("0")){
@@ -531,43 +591,5 @@ public class Attack {
             }
         }
         return 0;
-    }
-
-    public void MarkAttack(boolean markWhite){
-        if(markWhite){
-            ResetMarks();
-            for(int i=0; i<64; i++){
-                if(FigureIsWhite(i) == 1){
-                    RenameFigure(i);
-                }
-            }
-        }
-        else{
-            ResetMarks();
-            for(int i=0; i<64; i++){
-                if(FigureIsWhite(i) == 0){
-                    RenameFigure(i);
-                }
-            }
-        }
-    }
-
-    public void ResetMarks(){
-        for(int i=0; i<64; i++){
-            AttackMarks[i] = "00";
-        }
-    }
-
-    public void DevTool(boolean devTool){
-        // Dev Tool
-        if (devTool) {
-            System.out.println("\n---------------\n");
-            for (int i = 0; i < 64; i++) {
-                if (i != 0 && i % 8 == 0) {
-                    System.out.println();
-                }
-                System.out.print(AttackMarks[i] + " ");
-            }
-        }
     }
 }

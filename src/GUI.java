@@ -2,9 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Visuals{
-    Logic logic = new Logic();
-    Attack atk = new Attack();
+public class GUI {
+    Moving moving = new Moving();
 
     JFrame frame = new JFrame();
     JPanel titlePanel = new JPanel();
@@ -34,13 +33,11 @@ public class Visuals{
             resImageToIcon("b_queen.png"),
             resImageToIcon("b_king.png")};
 
-    Visuals(){
+    GUI(){
         // Assigning variables in the logic class
-        logic.buttons = buttons;
-        logic.titleText = titleText;
-        logic.figures = figures;
-        atk.buttons = buttons;
-        logic.atk = atk;
+        moving.buttons = buttons;
+        moving.titleText = titleText;
+        moving.figures = figures;
 
         // Setting up the window and buttons
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,10 +71,10 @@ public class Visuals{
             buttons[i].setBorder(BorderFactory.createLineBorder(new Color(45, 45, 45)));
             buttons[i].setFocusable(false);
             buttons[i].setOpaque(true);
-            buttons[i].addActionListener(logic);
+            buttons[i].addActionListener(moving);
         }
 
-        logic.Recolor();
+        moving.Recolor();
 
         titlePanel.add(titleText);
         frame.add(titlePanel, BorderLayout.NORTH);
