@@ -25,7 +25,6 @@ public class ESC implements KeyListener {
             }
             escPanel.setVisible(true);
             resumePanel.setVisible(true);
-            optionsPanel.setVisible(true);
             mainMenuPanel.setVisible(true);
             quitPanel.setVisible(true);
         }

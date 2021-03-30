@@ -21,8 +21,6 @@ public class ChessSP {
 
     JPanel resumePanel = new JPanel();
     JButton resumeButton = new JButton();
-    JPanel optionsPanel = new JPanel();
-    JButton optionsButton = new JButton();
     JPanel mMenuPanel = new JPanel();
     JButton mMenuButton = new JButton();
     JPanel quitPanel = new JPanel();
@@ -57,14 +55,12 @@ public class ChessSP {
         moving.figures = figures;
 
         e.resumePanel = resumePanel;
-        e.optionsPanel = optionsPanel;
         e.mainMenuPanel = mMenuPanel;
         e.quitPanel = quitPanel;
         e.escPanel = escPanel;
         e.buttons = buttons;
 
         r.resumePanel = resumePanel;
-        r.optionsPanel = optionsPanel;
         r.mainMenuPanel = mMenuPanel;
         r.quitPanel = quitPanel;
         r.escPanel = escPanel;
@@ -111,7 +107,7 @@ public class ChessSP {
 
         escPanel.setVisible(false);
         escPanel.setLayout(new BorderLayout());
-        escPanel.setBounds(windowWidth/4-7,windowWidth/12, windowWidth/2, (int)(windowHeight/1.8));
+        escPanel.setBounds(windowWidth/4-7,windowWidth/11, windowWidth/2, (int)(windowHeight/2.3));
         escPanel.setBackground(new Color(40, 40, 40));
         escPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
@@ -128,22 +124,9 @@ public class ChessSP {
         resumeButton.addActionListener(r);
         resumeButton.setOpaque(true);
 
-        optionsPanel.setVisible(false);
-        optionsPanel.setLayout(new BorderLayout());
-        optionsPanel.setBounds(windowWidth/3,windowHeight/8*2,windowWidth/3,windowHeight/16);
-        optionsButton.setBackground(new Color(50,50,50));
-        optionsButton.setForeground(new Color(250,250,250));
-        optionsButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
-        optionsButton.setBorder(BorderFactory.createLineBorder(new Color(20, 20, 20)));
-        optionsButton.setHorizontalAlignment(JLabel.CENTER);
-        optionsButton.setText("Options");
-        optionsButton.setFocusable(false);
-        //optionsButton.addActionListener();
-        optionsButton.setOpaque(true);
-
         mMenuPanel.setVisible(false);
         mMenuPanel.setLayout(new BorderLayout());
-        mMenuPanel.setBounds(windowWidth/3,windowHeight/8*3,windowWidth/3,windowHeight/16);
+        mMenuPanel.setBounds(windowWidth/3,windowHeight/8*2,windowWidth/3,windowHeight/16);
         mMenuButton.setBackground(new Color(50,50,50));
         mMenuButton.setForeground(new Color(250,250,250));
         mMenuButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
@@ -156,7 +139,7 @@ public class ChessSP {
 
         quitPanel.setVisible(false);
         quitPanel.setLayout(new BorderLayout());
-        quitPanel.setBounds(windowWidth/3,windowHeight/8*4,windowWidth/3,windowHeight/16);
+        quitPanel.setBounds(windowWidth/3,windowHeight/8*3,windowWidth/3,windowHeight/16);
         quitButton.setBackground(new Color(50,50,50));
         quitButton.setForeground(new Color(250,250,250));
         quitButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
@@ -169,13 +152,11 @@ public class ChessSP {
 
 
         resumePanel.add(resumeButton);
-        optionsPanel.add(optionsButton);
         mMenuPanel.add(mMenuButton);
         quitPanel.add(quitButton);
         titlePanel.add(titleText);
 
         frame.add(resumePanel);
-        frame.add(optionsPanel);
         frame.add(mMenuPanel);
         frame.add(quitPanel);
         frame.add(escPanel);

@@ -17,7 +17,6 @@ public class Resume implements ActionListener {
         }
         escPanel.setVisible(false);
         resumePanel.setVisible(false);
-        optionsPanel.setVisible(false);
         mainMenuPanel.setVisible(false);
         quitPanel.setVisible(false);
     }
