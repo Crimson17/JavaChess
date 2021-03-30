@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class Options implements ActionListener {
     JFrame mainMenuFrame;
@@ -57,31 +56,31 @@ public class Options implements ActionListener {
         optionsLabel.setIcon(icons[0]);
 
         lightButtonPanel.setLayout(new BorderLayout());
-        lightButtonPanel.setBounds(windowWidth/3,windowHeight/8,windowWidth/3,windowHeight/16);
+        lightButtonPanel.setBounds(windowWidth/3,windowHeight/8-7,windowWidth/3,windowHeight/16);
         lightButtonButton.setBackground(new Color(50,50,50));
         lightButtonButton.setForeground(new Color(250,250,250));
         lightButtonButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
         lightButtonButton.setBorder(BorderFactory.createLineBorder(new Color(20, 20, 20)));
         lightButtonButton.setHorizontalAlignment(JLabel.CENTER);
-        lightButtonButton.setText("Light button: ");
+        lightButtonButton.setText("Light button");
         lightButtonButton.setFocusable(false);
         lightButtonButton.addActionListener(l);
         lightButtonButton.setOpaque(true);
 
         darkButtonPanel.setLayout(new BorderLayout());
-        darkButtonPanel.setBounds(windowWidth/3,windowHeight/8*2,windowWidth/3,windowHeight/16);
+        darkButtonPanel.setBounds(windowWidth/3,windowHeight/8*2-7,windowWidth/3,windowHeight/16);
         darkButtonButton.setBackground(new Color(50,50,50));
         darkButtonButton.setForeground(new Color(250,250,250));
         darkButtonButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
         darkButtonButton.setBorder(BorderFactory.createLineBorder(new Color(20, 20, 20)));
         darkButtonButton.setHorizontalAlignment(JLabel.CENTER);
-        darkButtonButton.setText("Dark button: ");
+        darkButtonButton.setText("Dark button");
         darkButtonButton.setFocusable(false);
         darkButtonButton.addActionListener(d);
         darkButtonButton.setOpaque(true);
 
         mMenuPanel.setLayout(new BorderLayout());
-        mMenuPanel.setBounds(windowWidth/3,windowHeight/8*3,windowWidth/3,windowHeight/16);
+        mMenuPanel.setBounds(windowWidth/3,windowHeight/8*3-7,windowWidth/3,windowHeight/16);
         mMenuButton.setBackground(new Color(50,50,50));
         mMenuButton.setForeground(new Color(250,250,250));
         mMenuButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));

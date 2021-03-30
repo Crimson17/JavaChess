@@ -30,7 +30,7 @@ Menus:
 Main Menu - done
 Singleplayer - done
 ESC - done
-Options - wip
+Options - wip (Apply/Back, Discord/Back, Light button - color input - preview, Dark button - color input - preview)
 Multiplayer - not done
 
 Requirements:

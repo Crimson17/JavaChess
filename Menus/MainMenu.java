@@ -43,7 +43,7 @@ public class MainMenu {
         menuLabel.setIcon(icons[0]);
 
         spPanel.setLayout(new BorderLayout());
-        spPanel.setBounds(windowWidth/3,windowHeight/8,windowWidth/3,windowHeight/16);
+        spPanel.setBounds(windowWidth/3,windowHeight/8-7,windowWidth/3,windowHeight/16);
         spButton.setBackground(new Color(50,50,50));
         spButton.setForeground(new Color(250,250,250));
         spButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
@@ -55,7 +55,7 @@ public class MainMenu {
         spButton.setOpaque(true);
 
         mpPanel.setLayout(new BorderLayout());
-        mpPanel.setBounds(windowWidth/3,windowHeight/8*2,windowWidth/3,windowHeight/16);
+        mpPanel.setBounds(windowWidth/3,windowHeight/8*2-7,windowWidth/3,windowHeight/16);
         mpButton.setBackground(new Color(50,50,50));
         mpButton.setForeground(new Color(250,250,250));
         mpButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
@@ -67,7 +67,7 @@ public class MainMenu {
         mpButton.setOpaque(true);
 
         optionsPanel.setLayout(new BorderLayout());
-        optionsPanel.setBounds(windowWidth/3,windowHeight/8*3,windowWidth/3,windowHeight/16);
+        optionsPanel.setBounds(windowWidth/3,windowHeight/8*3-7,windowWidth/3,windowHeight/16);
         optionsButton.setBackground(new Color(50,50,50));
         optionsButton.setForeground(new Color(250,250,250));
         optionsButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));
@@ -79,7 +79,7 @@ public class MainMenu {
         optionsButton.setOpaque(true);
 
         quitPanel.setLayout(new BorderLayout());
-        quitPanel.setBounds(windowWidth/3,windowHeight/8*4,windowWidth/3,windowHeight/16);
+        quitPanel.setBounds(windowWidth/3,windowHeight/8*4-7,windowWidth/3,windowHeight/16);
         quitButton.setBackground(new Color(50,50,50));
         quitButton.setForeground(new Color(250,250,250));
         quitButton.setFont(new Font("Ink Free", Font.BOLD, windowHeight-windowWidth));

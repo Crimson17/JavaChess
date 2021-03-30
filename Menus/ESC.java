@@ -4,7 +4,6 @@ import java.awt.event.KeyListener;
 
 public class ESC implements KeyListener {
     JPanel resumePanel;
-    JPanel optionsPanel;
     JPanel mainMenuPanel;
     JPanel quitPanel;
     JPanel escPanel;
