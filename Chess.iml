@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Chess" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Menus" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/res" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Buttons" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
