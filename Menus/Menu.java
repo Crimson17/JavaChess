@@ -3,7 +3,6 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Menu {
-
     Singleplayer sp = new Singleplayer();
     Multiplayer mp = new Multiplayer();
     Options op = new Options();
@@ -22,11 +21,12 @@ public class Menu {
     JButton quitButton = new JButton();
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int windowWidth = (int)(screenSize.getHeight() - 100);
+    int windowWidth = (int)screenSize.getHeight() - 100;
     int windowHeight = windowWidth + (windowWidth/25);
 
     Menu(){
         sp.mainMenuFrame = mainMenu;
+        op.mainMenuFrame = mainMenu;
 
         mainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainMenu.setSize(windowWidth,windowHeight);

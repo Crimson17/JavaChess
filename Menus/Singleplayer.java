@@ -4,13 +4,13 @@ import java.awt.event.ActionListener;
 
 public class Singleplayer implements ActionListener {
     JFrame mainMenuFrame;
-    Chess chess;
+    ChessSP chessSP;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         mainMenuFrame.setVisible(false);
-        chess = new Chess();
-        chess.mMenu.mainMenuFrame = mainMenuFrame;
-        chess.mMenu.chess = chess.frame;
+        chessSP = new ChessSP();
+        chessSP.mMenu.mainMenuFrame = mainMenuFrame;
+        chessSP.mMenu.chess = chessSP.frame;
     }
 }

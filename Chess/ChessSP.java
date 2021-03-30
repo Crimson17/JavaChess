@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Chess {
+public class ChessSP {
     Moving moving = new Moving();
     Check c = new Check();
     Mate m = new Mate();
@@ -50,7 +50,7 @@ public class Chess {
             resImageToIcon("b_queen.png"),
             resImageToIcon("b_king.png")};
 
-    Chess(){
+    ChessSP(){
         // Assigning variables in the logic class
         moving.buttons = buttons;
         moving.titleText = titleText;
@@ -111,8 +111,9 @@ public class Chess {
 
         escPanel.setVisible(false);
         escPanel.setLayout(new BorderLayout());
-        escPanel.setBounds(windowWidth/4,windowHeight/12, windowWidth/2, (int)(windowHeight/1.8));
-        escPanel.setBackground(new Color(60, 60, 60));
+        escPanel.setBounds(windowWidth/4-7,windowWidth/12, windowWidth/2, (int)(windowHeight/1.8));
+        escPanel.setBackground(new Color(40, 40, 40));
+        escPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
         resumePanel.setVisible(false);
         resumePanel.setLayout(new BorderLayout());
