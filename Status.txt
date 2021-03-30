@@ -26,15 +26,22 @@ Steps:
 7. FEN is sent to server
 8. repeat until draw or checkmate
 
+Menus:
+Main Menu - done
+Singleplayer - done
+ESC - done
+Options - wip
+Multiplayer - not done
+
 Requirements:
 1. FEN maker - done
 2. FEN loader - done
-3. Main Menu (Singleplayer, Multiplayer, quit, *Maybe options*(To change board colors)
+3. Main MainMenu (Singleplayer, Multiplayer, quit, *Maybe options*(To change board colors)
 4. TCP connection
 
 optional stuff:
 Play sound on figure select and move
-Add volume option to the OPTIONS menu
+Add volume option to the OPTIONS mainMenu
 
 Personal use:
 00 01 02 03 04 05 06 07

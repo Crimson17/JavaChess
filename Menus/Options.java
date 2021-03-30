@@ -38,7 +38,6 @@ public class Options implements ActionListener {
             optionsFrame.setVisible(!optionsFrame.isVisible());
         }
         firstShowOptions = !firstShowOptions;
-        System.out.println("Options");
     }
 
     Options(){

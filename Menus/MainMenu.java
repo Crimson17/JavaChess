@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Menu {
+public class MainMenu {
     Singleplayer sp = new Singleplayer();
     Multiplayer mp = new Multiplayer();
     Options op = new Options();
@@ -24,7 +24,7 @@ public class Menu {
     int windowWidth = (int)screenSize.getHeight() - 100;
     int windowHeight = windowWidth + (windowWidth/25);
 
-    Menu(){
+    MainMenu(){
         sp.mainMenuFrame = mainMenu;
         op.mainMenuFrame = mainMenu;
 
