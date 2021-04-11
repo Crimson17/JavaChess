@@ -1,2 +1,2 @@
 # JavaChess
- Moving I made in java
+ Chess I made in java
